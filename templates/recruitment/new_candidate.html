@@ -1,0 +1,137 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">New Candidate</li>
+{% endblock %}
+
+{% block output %}
+  {% if obj_candidate %}
+          <div class="alert alert-warning alert-dismissible text-center fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+              <strong>Candidate already exists !!!</strong>
+              <br><br>
+                <div class="table-responsive">
+    <table class="table table-sm table-hover text-left">
+        <thead>
+        <tr role="row" class="alert alert-warning">
+            <th class="text-sm" style="width: 150px;">CANDIDATE ID</th>
+            <th class="text-sm" style="width: 150px;">JOB CODE</th>
+            <th class="text-sm" style="width: 150px;">CLIENT CODE</th>
+            <th class="text-sm" style="width: 180px;">CANDIDATE NAME</th>
+            <th class="text-sm" style="width: 160px;">RECRUITER</th>
+            <th class="text-sm" style="width: 160px;">STATUS</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for candidate in obj_candidate %}
+        <tr role="row" class="odd">
+            <td><a href="/recruitment/candidate/{{candidate.id}}/view/"><button class="btn btn-sm btn-default>"><span><i class="fa fa-eye fa-lg text-default" aria-hidden="true"></i></span> {{candidate.CANDIDATE_ID}}</button></a></td>
+            <td>{{candidate.JOB_CODE|truncatechars:25}}</td>
+            <td>{{candidate.JOB_CODE.CLIENT_CODE.CUSTOMER_CODE}}</td>
+            <td>{{candidate.FIRST_NAME}} {% if candidate.LAST_NAME %} {{candidate.LAST_NAME}}{% else %}{% endif %}</td>
+            <td>{{candidate.RECRUITER}}</td>
+            <td>{{candidate.CANDIDATE_STATUS}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+              </div>
+  {% endif %}
+{% endblock %}
+
+{% block heading %} Add New Candidate {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+              <form enctype="multipart/form-data" method="post">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                    {% if field.name == 'SKILL_SET' %}
+                      <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <textarea name="{{field.name}}" id="id_{{field.name}}" rows="2" placeholder="Type candidate skills here. Example- Java, C++, SQL, etc.">{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                      </div>
+                    {% elif field.name == 'RESUME' %}
+                    <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group mb-1">
+                        {{field}}
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary" onclick="document.getElementById('id_RESUME').value = ''" type="button" id="btn_clear"><i class="fas fa-trash-alt"></i> Clear</button>
+                          </div>
+                        </div>
+                      <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
+                    </div>
+                    {% elif field.name == 'JOB_CODE' %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        <select class="form-control" name="{{field.name}}" id="id_{{field.name}}">
+                          <option value="">---------</option>
+                          {% for item in obj_job %}
+                            {% if item.id == form.JOB_CODE.value|add:"0" %}
+                                  <option value="{{item.id}}" selected>{{item}}</option>
+                            {% elif item.id == field.value %}
+                                  <option value="{{item.id}}" selected>{{item}}</option>
+                            {% else %}
+                                  <option value="{{item.id}}">{{item}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default">Add</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+
+
+<script>
+var numInputFields = ['MOBILE_NUMBER'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'LOCATION'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+</script>
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

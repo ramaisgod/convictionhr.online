@@ -1,0 +1,123 @@
+{% extends 'layouts/employee/index.html' %}
+{% load static %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block content %}
+
+{% if data %}
+<div class="form-row alert alert-warning p-2">
+    <strong>Congratulations...</strong> I have successfully pulled below information from CV. Please check and correct if there is any wrong information.
+</div>
+{% endif %}
+<div class="card shadow">
+    <h5 class="card-header alert alert-default">UPLOAD NEW CV</h5>
+    <div class="card-body">
+        {% if not data %}
+        <form name="file_form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-inline">
+                <label class="sr-only" for="file">Name</label>
+                {% for field in form %}
+                {% if field.name == 'RESUME' %}
+                {{field}}
+                {% else %}
+                {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-default mb-2">Proceed</button>
+            </div>
+            <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
+        </form>
+            {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <input type="file" name="RESUME" value="{{attachment}}">
+                <div class="form-group col-md-6">
+                    <label for="">FIRST NAME</label>
+                    <input type="text" name="FIRST_NAME" value="{{full_name.first_name}}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">LAST NAME</label>
+                    <input type="text" name="LAST_NAME" value="{{full_name.last_name}}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">GENDER</label>
+                    <select name="GENDER" required>
+                        <option value selected>---------</option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">MOBILE NUMBER</label>
+                    <input type="text" minlength="10" maxlength="10" name="MOBILE_NUMBER" value="{{data.mobile_number}}" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">EMAIL</label>
+                    <input type="email" name="EMAIL" value="{{data.email}}" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">SKILLS</label>
+                    <textarea name="SKILLS" rows="3" placeholder="Type here">{{skills}}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">REMARKS</label>
+                    <textarea name="REMARKS" rows="3" placeholder="Type here"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <button name="btn_save" type="submit" class="btn btn-default btn-sm">Save</button>
+                </div>
+            </div>
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control');
+// $('select').addClass('fstdropdown-select');
+// $('select').removeClass('form-control');
+$("#id_FIRST_NAME").attr('required', '');
+$("#id_GENDER").attr('required', '');
+$("#id_MOBILE_NUMBER").attr('required', '');
+$("#id_EMAIL").attr('required', '');
+
+</script>
+
+
+<script>
+var numInputFields = ['MOBILE_NUMBER'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'LAST_NAME'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,271 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Client</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'client_list' %}">List of Clients</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">View</li>
+{% endblock %}
+
+{% block heading %} Client Details ({{obj_client.CUSTOMER_CODE}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="nav-wrapper">
+    <ul class="nav nav-pills flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">CLIENT DETAILS</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">ADDRESS</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="false">DOCUMENTS</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-4-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">SPOC PERSON</a>
+        </li>
+    </ul>
+</div>
+
+<div class="card shadow w-100">
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">CUSTOMER_NAME</label><br>
+                     <strong>{{obj_client.CUSTOMER_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CUSTOMER_START_DATE</label><br>
+                      <strong>{{obj_client.CUSTOMER_START_DATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CONTRACT_START_DATE</label><br>
+                      <strong>{{obj_client.CONTRACT_START_DATE}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">CONTRACT_END_DATE</label><br>
+                     <strong>{{obj_client.CONTRACT_END_DATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">MSMED_NUMBER</label><br>
+                      <strong>{{obj_client.MSMED_NUMBER}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">POTENTIAL_CUSTOMER</label><br>
+                      <strong>{{obj_client.POTENTIAL_CUSTOMER}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">SKILL</label><br>
+                     <strong>{{obj_client.SKILL}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">LOCATION_SERVE</label><br>
+                      <strong>{{obj_client.LOCATION_SERVE}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">GSTIN_NUMBER</label><br>
+                     <strong>{{obj_client.GSTIN_NUMBER}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">PAN_NUMBER</label><br>
+                      <strong>{{obj_client.PAN_NUMBER}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for=""></label><br>
+                      <strong></strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-8">
+                    <label for="">CORPORATE_ADDRESS</label><br>
+                     <strong>{{obj_client.CORPORATE_ADDRESS}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CORPORATE_CITY</label><br>
+                      <strong>{{obj_client.CORPORATE_CITY}}</strong>
+                  </div>
+                </div>
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">CORPORATE_STATE</label><br>
+                     <strong>{{obj_client.CORPORATE_STATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CORPORATE_PINCODE</label><br>
+                      <strong>{{obj_client.CORPORATE_PINCODE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CORPORATE_COUNTRY</label><br>
+                      <strong>{{obj_client.CORPORATE_COUNTRY}}</strong>
+                  </div>
+                </div>
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-8">
+                    <label for="">BILLING_ADDRESS</label><br>
+                     <strong>{{obj_client.BILLING_ADDRESS}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BILLING_CITY</label><br>
+                      <strong>{{obj_client.BILLING_CITY}}</strong>
+                  </div>
+                </div>
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">BILLING_STATE</label><br>
+                     <strong>{{obj_client.BILLING_STATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BILLING_PINCODE</label><br>
+                      <strong>{{obj_client.BILLING_PINCODE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BILLING_COUNTRY</label><br>
+                      <strong>{{obj_client.BILLING_COUNTRY}}</strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                <!-- Display all docs -->
+                <span class="h5">Available Documents :</span>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                <thead class="thead-light">
+                <tr role="row">
+                    <th class="text-sm" style="width: 182px;">UPLOAD TIMESTAMP</th>
+                    <th class="text-sm" style="width: 282px;">DOCUMENT TITLE</th>
+                    <th class="text-sm" style="width: 137px;">ACTION</th>
+                </tr>
+                </thead>
+                    <tbody>
+                  {% for item in obj_client_docs %}
+                    <tr>
+                        <td>{{item.UPLOAD_TIMESTAMP}}</td>
+                        <td>{{item.DOCUMENT_TITLE}}</td>
+                        <td><a href="{% url 'download_docs' item.id %}" role="button" class="btn btn-sm btn-default">Download</a></td>
+                    </tr>
+                  {% endfor %}
+                    </tbody>
+                     </table>
+                  </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
+                <!-- Display all SPOC Person -->
+                <center><small><strong>{{obj_spoc.0.CUSTOMER}}</strong></small></center>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                <thead class="thead-light">
+                <tr role="row">
+                    <th class="text-sm" style="width: 182px;">LOCATION</th>
+                    <th class="text-sm" style="width: 182px;">SPOC NAME</th>
+                    <th class="text-sm" style="width: 182px;">EMAIL</th>
+                    <th class="text-sm" style="width: 182px;">CONTACT</th>
+                    <th class="text-sm" style="width: 182px;">TYPE</th>
+                </tr>
+                </thead>
+                    <tbody>
+                  {% for item in obj_spoc %}
+                    <tr>
+                        <td>{{item.LOCATION}}</td>
+                        <td>{{item.PERSON_NAME}}</td>
+                        <td>{{item.EMAIL}}</td>
+                        <td>{{item.CONTACT}}</td>
+                        <td>{{item.TYPE}}</td>
+                    </tr>
+                  {% endfor %}
+                    </tbody>
+                     </table>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="activeTab_No" value="{% if request.GET.activeTab %}{{request.GET.activeTab}}{% else %}{{activeTab_No}}{% endif %}">
+
+
+<script>
+var activeTabNo =  document.getElementById("activeTab_No").value;
+for(var tab=1; tab<=4; tab++){
+if (tab == activeTabNo){
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).addClass('active');
+jQuery(tab2).addClass('show active');
+}else{
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).removeClass('active');
+jQuery(tab2).removeClass('show active');
+}
+}
+</script>
+
+
+{% include 'includes/script.html' %}
+
+<script>
+function billingAddressFields(){
+var addressList = ['BILLING_ADDRESS', 'BILLING_CITY', 'BILLING_STATE', 'BILLING_PINCODE', 'BILLING_COUNTRY'];
+var sameAdd = document.getElementById("id_BOTH_ADDRESS_SAME");
+if (sameAdd.checked == true){
+    Array.from(addressList).forEach(function(element) {
+        document.getElementById("id_" + element).required=false;
+        document.getElementById("id_" + element).style.display="none";
+        document.getElementById("id_" + element).previousElementSibling.style.display="none"
+})
+}else{
+    Array.from(addressList).forEach(function(element) {
+        document.getElementById("id_" + element).style.display="block";
+        document.getElementById("id_" + element).previousElementSibling.style.display="block"
+        document.getElementById("id_" + element).value="";
+        document.getElementById("id_" + element).required=true;
+    })
+}
+}
+// calling above function
+billingAddressFields()
+</script>
+
+
+<script>
+var numInputFields = ['CORPORATE_PINCODE', 'BILLING_PINCODE'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['CORPORATE_CITY', 'BILLING_CITY'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+
+
+
+{% endblock %}

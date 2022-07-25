@@ -1,0 +1,129 @@
+{% extends 'layouts/employee/index.html' %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Assigned Job</li>
+{% endblock %}
+
+{% block heading %} Assigned Job ({{obj_job.paginator.count}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<form method="get">
+<div class="row">
+    <div class="col-md-3 mb-2">
+            {{form.SEARCH_BY}}
+    </div>
+    <div class="col-md-5 mb-2">
+        <div class="input-group">
+          {{form.SEARCH_TEXT}}
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary" name="btn_search" type="submit"><i class="fas fa-search"></i> Search</button>
+          </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th class="text-sm">Job Code</th>
+            <th class="text-sm">Job Title</th>
+            <th class="text-sm">Client</th>
+            <th class="text-sm">TARGET DATE</th>
+            <th class="text-sm">#</th>
+            <th class="text-sm">PRIORITY</th>
+            <th class="text-sm">ASSIGNED BY</th>
+            <th class="text-sm">STATUS</th>
+            <th class="text-sm">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for job in obj_job %}
+        <tr>
+            <td class="text-wrap">{{job.JOB_CODE}}</td>
+            <td class="text-wrap">{{job.JOB_TITLE|truncatechars:15}}</td>
+            <td class="text-wrap">{{job.CLIENT_CODE|truncatechars:15}}</td>
+            <td class="text-wrap">{{job.TARGET_DATE}}</td>
+            <td class="text-wrap">{{job.NUMBER_OF_POSITIONS}}</td>
+            <td class="text-wrap">{{job.PRIORITY_TYPE}}</td>
+            <td class="text-wrap">{{job.CREATED_BY}}</td>
+            <td class="text-wrap">{{job.JOB_OPENING_STATUS}}</td>
+            <td>
+                <div class="dropdown dropright">
+                    <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span><i class="ni ni-curved-next"></i></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenu2">
+                        <a href="/recruitment/job/{{job.id}}/view/" class="dropdown-item" type="button">View</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_job.start_index}} to {{obj_job.end_index}} of
+            {{obj_job.paginator.count}} entries
+        </div>
+
+        {% if obj_job.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_job.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_job.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_job.paginator.page_range %}
+                {% if obj_job.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_job.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_job.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

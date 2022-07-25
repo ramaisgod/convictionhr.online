@@ -1,0 +1,79 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Schedule Interview</li>
+{% endblock %}
+
+{% block heading %} Schedule Interview {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+              <form id="scheduleInterviewForm" data-spoc-url="{% url 'ajax_load_spocs' %}" method="post">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                    {% if field.name == 'REMARKS' %}
+                      <div class="form-group col-md-8">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                      </div>
+                    {% elif field.name == 'CANDIDATE' %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        <select class="form-control" name="{{field.name}}" id="id_{{field.name}}">
+                          <option value="" selected>---------</option>
+                          {% for item in obj_candidate %}
+                          {% if item.JOB_CODE %}
+                            <option value="{{item.id}}">{{item}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default">Schedule</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+  <script>
+    $("#id_CANDIDATE").change(function () {
+      var url = $("#scheduleInterviewForm").attr("data-spoc-url");  // get the url of the `load_cities` view
+      var candidateID = $(this).val();  // get the selected country ID from the HTML input
+      console.log(candidateID);
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        data: {
+          'candidate': candidateID       // add the country id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_cities` view function
+          $("#id_INTERVIEWER_NAME").html(data);  // replace the contents of the city input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

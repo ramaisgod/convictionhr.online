@@ -1,0 +1,421 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Employee</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'employee_list' %}">List of Employees</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">View</li>
+{% endblock %}
+
+{% block heading %} Employee Details ({{obj_emp.EMPLOYEE_CODE}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="nav-wrapper">
+    <ul class="nav nav-pills flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral active" id="tabs-icons-text-1-tab" data-toggle="tab"
+               href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">MY
+                PROFILE</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2"
+               role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">EMPLOYEE DETAILS</a>
+        </li>
+        {% if obj_emp.EMPLOYMEE_TYPE == 'EXPERIENCED' %}
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3"
+               role="tab" aria-controls="tabs-icons-text-3" aria-selected="true">LAST EMPLOYMENT</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-4-tab" data-toggle="tab" href="#tabs-icons-text-4"
+               role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">BANK DETAILS</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-5-tab" data-toggle="tab" href="#tabs-icons-text-5"
+               role="tab" aria-controls="tabs-icons-text-5" aria-selected="false">DOCUMENTS</a>
+        </li>
+    </ul>
+</div>
+
+<div class="card shadow w-100">
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel"
+                 aria-labelledby="tabs-icons-text-1-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">FIRST NAME</label><br>
+                     <strong>{{obj_emp.FIRST_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">MIDDLE NAME</label><br>
+                      <strong>{{obj_emp.MIDDLE_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">LAST NAME</label><br>
+                      <strong>{{obj_emp.LAST_NAME}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">FATHER NAME</label><br>
+                     <strong>{{obj_emp.FATHER_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">DATE OF BIRTH</label><br>
+                      <strong>{{obj_emp.DATE_OF_BIRTH}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">PRESENT ADDRESS</label><br>
+                      <strong>{{obj_emp.PRESENT_ADDRESS}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">PRESENT CITY</label><br>
+                     <strong>{{obj_emp.PRESENT_CITY}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">PRESENT PIN</label><br>
+                      <strong>{{obj_emp.PRESENT_PIN}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">GENDER</label><br>
+                      <strong>{{obj_emp.GENDER}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">EMERGENCY CONTACT NUMBER</label><br>
+                     <strong>{{obj_emp.EMERGENCY_CONTACT_NUMBER}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">EMERGENCY CONTACT NAME</label><br>
+                      <strong>{{obj_emp.EMERGENCY_CONTACT_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BLOOD GROUP</label><br>
+                      <strong>{{obj_emp.BLOOD_GROUP}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">PRIMARY MOBILE NO</label><br>
+                     <strong>{{obj_emp.PRIMARY_MOBILE_NO}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">SECONDARY MOBILE NO</label><br>
+                      <strong>{{obj_emp.SECONDARY_MOBILE_NO}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">MARITAL STATUS</label><br>
+                      <strong>{{obj_emp.MARITAL_STATUS}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">PERSONNEL EMAIL</label><br>
+                     <strong>{{obj_emp.PERSONNEL_EMAIL}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">QUALIFICATION</label><br>
+                      <strong>{{obj_emp.QUALIFICATION}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">NATIONALITY</label><br>
+                      <strong>{{obj_emp.NATIONALITY}}</strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">DATE OF JOINING</label><br>
+                     <strong>{{obj_emp.DATE_OF_JOINING}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">DEPARTMENT</label><br>
+                      <strong>{{obj_emp.DEPARTMENT}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">DESIGNATION</label><br>
+                      <strong>{{obj_emp.DESIGNATION}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">GRADE</label><br>
+                     <strong>{{obj_emp.GRADE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">OPS ROLE</label><br>
+                      <strong>{{obj_emp.OPS_ROLE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">CATEGORY</label><br>
+                      <strong>{{obj_emp.CATEGORY}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BRANCH</label><br>
+                      <strong>{{obj_emp.BRANCH}}</strong>
+                  </div>
+
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">LOCATION</label><br>
+                     <strong>{{obj_emp.LOCATION}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">STATE</label><br>
+                      <strong>{{obj_emp.STATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">EMPLOYEE TYPE</label><br>
+                      <strong>{{obj_emp.EMPLOYEE_TYPE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">EMPLOYMENT TYPE</label><br>
+                      <strong>{{obj_emp.EMPLOYMENT_TYPE}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">REPORTING MANAGER CODE</label><br>
+                     <strong>{{obj_emp.REPORTING_MANAGER_CODE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">REPORTING MANAGER NAME</label><br>
+                      <strong>{{obj_emp.REPORTING_MANAGER_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">REFERENCE NAME</label><br>
+                      <strong>{{obj_emp.REFERENCE_NAME}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">REFERENCE CONTACT NO</label><br>
+                     <strong>{{obj_emp.REFERENCE_CONTACT_NO}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">REFERENCE DESIGNATION</label><br>
+                      <strong>{{obj_emp.REFERENCE_DESIGNATION}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">OFFICIAL EMAIL</label><br>
+                      <strong>{{obj_emp.OFFICIAL_EMAIL}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">HR MANAGER CODE</label><br>
+                     <strong>{{obj_emp.HR_MANAGER_CODE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">HR MANAGER NAME</label><br>
+                      <strong>{{obj_emp.HR_MANAGER_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">DATE OF RESIGNATION</label><br>
+                     <strong>{{obj_emp.DATE_OF_RESIGNATION}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">RELIEVING DATE</label><br>
+                      <strong>{{obj_emp.RELIEVING_DATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">DATE OF CONFIRMATION</label><br>
+                      <strong>{{obj_emp.DATE_OF_CONFIRMATION}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">SWIPE ATTENDANCE NUMBER</label><br>
+                     <strong>{{obj_emp.SWIPE_ATTENDANCE_NUMBER}}</strong>
+                  </div>
+
+
+                  <div class="form-group col-md-4">
+                    <label for="">SOURCE OF HIRE</label><br>
+                      <strong>{{obj_emp.SOURCE_OF_HIRE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">SUB SOURCE</label><br>
+                      <strong>{{obj_emp.SUB_SOURCE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">EMPLOYEE STATUS</label><br>
+                     <strong>{{obj_emp.EMPLOYEE_STATUS}}</strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">TOTAL_EXPERIENCE</label><br>
+                     <strong>{{obj_emp.TOTAL_EXPERIENCE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">LAST_EMPLOYER_NAME</label><br>
+                      <strong>{{obj_emp.LAST_EMPLOYER_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">LAST_EMPLOYER_START_DATE</label><br>
+                      <strong>{{obj_emp.LAST_EMPLOYER_START_DATE}}</strong>
+                  </div>
+
+                  <div class="form-group col-md-4">
+                    <label for="">LAST_EMPLOYER_END_DATE</label><br>
+                     <strong>{{obj_emp.LAST_EMPLOYER_END_DATE}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">LAST_EMPLOYER_CTC</label><br>
+                      <strong>{{obj_emp.LAST_EMPLOYER_CTC}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for=""></label><br>
+                      <strong></strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">AADHAAR_CARD_NO</label><br>
+                     <strong>{{obj_emp.AADHAAR_CARD_NO}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BANK_NAME</label><br>
+                      <strong>{{obj_emp.BANK_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">IFSC_CODE</label><br>
+                      <strong>{{obj_emp.IFSC_CODE}}</strong>
+                  </div>
+                </div>
+                <div class="form-row text-sm">
+                  <div class="form-group col-md-4">
+                    <label for="">BANK_BRANCH_NAME</label><br>
+                     <strong>{{obj_emp.BANK_BRANCH_NAME}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">BANK_ACCOUNT_NO</label><br>
+                      <strong>{{obj_emp.BANK_ACCOUNT_NO}}</strong>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="">PAN_CARD_NUMBER</label><br>
+                      <strong>{{obj_emp.PAN_CARD_NUMBER}}</strong>
+                  </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-5" role="tabpanel" aria-labelledby="tabs-icons-text-5-tab">
+                <!-- Display all docs -->
+                <span class="h5">Available Documents :</span>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead class="thead-light">
+                        <tr role="row">
+                            <th class="text-sm" style="width: 182px;">UPLOAD TIMESTAMP</th>
+                            <th class="text-sm" style="width: 282px;">DOCUMENT TITLE</th>
+                            <th class="text-sm" style="width: 137px;">ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in obj_emp_docs %}
+                        <tr>
+                            <td>{{item.UPLOAD_TIMESTAMP}}</td>
+                            <td>{{item.DOCUMENT_TITLE}}</td>
+                            <td><a href="{% url 'download_emp_docs' item.id %}" role="button"
+                                   class="btn btn-sm btn-default">Download</a></td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="activeTab_No" value="{{activeTab_No}}">
+
+<script>
+var activeTabNo =  document.getElementById("activeTab_No").value;
+for(var tab=1; tab<=5; tab++){
+if (tab == activeTabNo){
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).addClass('active');
+jQuery(tab2).addClass('show active');
+}else{
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).removeClass('active');
+jQuery(tab2).removeClass('show active');
+}
+}
+
+
+</script>
+
+{% include 'includes/script.html' %}
+
+<script>
+$("#id_REPORTING_MANAGER_CODE").on('change keydown paste input', function(){
+    $("#id_REPORTING_MANAGER_NAME").val("");
+});
+
+function empCodeValidate(){
+empCode = document.getElementById('id_REPORTING_MANAGER_CODE').value;
+$.ajax({
+url: 'ajax/emp_name/',
+data: {'empCode': String(empCode)},
+dataType: 'json',
+success: function(data){
+if (data.emp_name != ''){
+$("#id_REPORTING_MANAGER_NAME").val(data.emp_name);
+}else{
+alert("Please enter valid employee code");
+}
+}
+}
+)
+}
+
+
+
+</script>
+
+<script>
+var numInputFields = ['REPORTING_MANAGER_CODE', 'PRESENT_PIN', 'PRIMARY_MOBILE_NO', 'SECONDARY_MOBILE_NO',
+'SWIPE_ATTENDANCE_NUMBER', 'LAST_EMPLOYER_CTC', 'AADHAAR_CARD_NO', 'BANK_ACCOUNT_NO'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'FATHER_NAME', 'PRESENT_CITY',
+'EMERGENCY_CONTACT_NAME', 'REFERENCE_NAME', 'REFERENCE_DESIGNATION', 'BANK_NAME'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+
+
+</script>
+{% endblock %}

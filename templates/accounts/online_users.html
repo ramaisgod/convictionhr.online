@@ -1,0 +1,110 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Accounts</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Online Users</li>
+{% endblock %}
+
+{% block heading %} Online Users ({{obj_user.paginator.count}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="table-responsive">
+    <table class="table table-flush dataTable table-sm table-hover">
+        <thead class="thead-light">
+        <tr role="row">
+            <th class="text-sm" style="width: 150px;">User ID</th>
+            <th class="text-sm" style="width: 150px;">Name</th>
+            <th class="text-sm" style="width: 150px;">User Type</th>
+            <th class="text-sm" style="width: 150px;">Role</th>
+            <th class="text-sm" style="width: 150px;">Last Login</th>
+            <th class="text-sm" style="width: 150px;">Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in obj_user %}
+        <tr role="row" class="odd">
+            <td class="sorting_1">{{user.username}}</td>
+            <td>{{user.first_name}} {% if user.last_name %}{{user.last_name}}{% else %}{% endif %}</td>
+            <td>
+                {% if user.user_type == 1 %}
+                CANDIDATE
+                {% elif user.user_type == 2 %}
+                CUSTOMER
+                {% elif user.user_type == 3 %}
+                EMPLOYEE
+                {% else %}
+                {% endif %}
+            </td>
+            <td>
+                {% for key, value in role_dict.items %}
+                {% if key == user.roles %}
+                {{value}}
+                {% endif %}
+                {% endfor %}
+            </td>
+            <td>{{user.last_login}}</td>
+            <td class="text-success font-weight-bold">ONLINE</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_user.start_index}} to {{obj_user.end_index}} of
+            {{obj_user.paginator.count}} entries
+    </div>
+
+<nav aria-label="Page navigation example">
+        {% if obj_user.has_other_pages %}
+            <ul class="pagination justify-content-end">
+                {% if obj_user.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_user.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_user.paginator.page_range %}
+                {% if obj_user.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_user.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_user.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+</nav>
+
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+CHOICE_SEARCH_BY_APPLICATIONS = [
+    ('', '--- Search By ---'),
+    ('CANDIDATE_ID', 'CANDIDATE_ID'),
+    ('CANDIDATE_NAME', 'CANDIDATE_NAME'),
+    ('PAN_NUMBER', 'PAN_NUMBER'),
+    ('MOBILE_NUMBER', 'MOBILE_NUMBER'),
+    ('EMAIL', 'EMAIL'),
+]

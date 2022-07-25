@@ -1,0 +1,151 @@
+{% extends 'layouts/customer/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href=""><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Interviews</a></li>
+{% endblock %}
+
+{% block heading %} Interviews ({{obj_interview.paginator.count}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-9">
+    </div>
+    <div class="col-md-3 text-right">
+
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="thead-light">
+        <tr role="row">
+            <th class="text-sm">INTERVIEW ID</th>
+            <th class="text-sm">JOB TITLE</th>
+            <th class="text-sm">CANDIDATE NAME</th>
+            <th class="text-sm">RESUME</th>
+            <th class="text-sm">INTERVIEW DATE</th>
+            <th class="text-sm">ROUND</th>
+            <th class="text-sm">STATUS</th>
+            <th class="text-sm">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for interview in obj_interview %}
+        <tr role="row" class="odd">
+            <td>{{interview.INTERVIEW_ID}}</td>
+            <td class="text-wrap">{{interview.CANDIDATE.JOB_CODE.JOB_TITLE}}</td>
+            <td class="text-wrap">{{interview.CANDIDATE.FIRST_NAME}} {% if interview.CANDIDATE.LAST_NAME %}{{interview.CANDIDATE.LAST_NAME}}{% else %}{% endif %}</td>
+            <td class="text-wrap"><a href="{% url 'resume_client_download' interview.CANDIDATE.id %}">Download</a></td>
+            <td class="text-wrap">{{interview.INTERVIEW_DATE}} {{interview.INTERVIEW_TIME}}</td>
+            <td class="text-wrap">{{interview.INTERVIEW_ROUND}}</td>
+            <td>{{interview.INTERVIEW_STATUS}}</td>
+            <td>
+                {% if interview.INTERVIEW_STATUS == 'IN-PROCESS' %}
+                    <a href="{% url 'update_status' interview.id %}" id="{{interview.id}}" class="btn btn-primary btn-sm" type="button">UPDATE</a>
+                {% else %}
+                Not Required
+                {% endif %}
+
+            </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_interview.start_index}} to {{obj_interview.end_index}} of
+            {{obj_interview.paginator.count}} entries
+        </div>
+
+        {% if obj_interview.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_interview.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_interview.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_interview.paginator.page_range %}
+                {% if obj_interview.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_interview.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_interview.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control');
+</script>
+
+
+<script>
+
+$(document).ready(function () {
+var interviewID = 0;
+    $("a").click(function() {
+        var a = $(this);
+        interviewID = a.attr('id');
+    })
+
+    $("select").change(function () {
+        var el = $(this);
+        if (el.val() === "PENDING") {
+              document.getElementById('id_CANDIDATE_STATUS'+interviewID).options.length = 0;
+              // $("#id_CANDIDATE_STATUS option:last-child").remove();
+              $("#id_CANDIDATE_STATUS"+interviewID).append("<option>PENDING</option>");
+        } else if (el.val() === "ON-HOLD") {
+            document.getElementById('id_CANDIDATE_STATUS'+interviewID).options.length = 0;
+            $("#id_CANDIDATE_STATUS"+interviewID).append("<option>ON-HOLD</option>");
+        } else if (el.val() === "COMPLETED") {
+            document.getElementById('id_CANDIDATE_STATUS'+interviewID).options.length = 0;
+            $("#id_CANDIDATE_STATUS"+interviewID).append("<option></option>");
+            $("#id_CANDIDATE_STATUS"+interviewID).append("<option>SELECT</option>");
+            $("#id_CANDIDATE_STATUS"+interviewID).append("<option>REJECT</option>");
+        } else if (el.val() === "") {
+            document.getElementById('id_CANDIDATE_STATUS+interviewID').options.length = 0;
+        }
+    });
+
+});
+
+</script>
+
+
+{% endblock %}

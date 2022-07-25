@@ -1,0 +1,50 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Reports</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Download</li>
+{% endblock %}
+
+{% block heading %} Reports {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="table-responsive">
+  <table class="table table-striped table-sm shadow table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Name of Report</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Job Master</td>
+      <td> <a href="{% url 'export_job_master' %}" class="btn btn-sm btn-default"><i class="fas fa-download"></i> Download</a></td>
+    </tr>
+    <tr>
+      <td>Candidate Master</td>
+      <td> <a href="{% url 'export_candidate_master' %}" class="btn btn-sm btn-default"><i class="fas fa-download"></i> Download</a></td>
+    </tr>
+    <tr>
+      <td>Interview Master</td>
+      <td> <a href="{% url 'export_interview_master' %}" class="btn btn-sm btn-default"><i class="fas fa-download"></i> Download</a></td>
+    </tr>
+    <tr>
+      <td>Employee Master</td>
+      <td> <a href="{% url 'export_employee_master' %}" class="btn btn-sm btn-default"><i class="fas fa-download"></i> Download</a></td>
+    </tr>
+    <tr>
+      <td>Client Master</td>
+      <td> <a href="{% url 'export_client_master' %}" class="btn btn-sm btn-default"><i class="fas fa-download"></i> Download</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+{% endblock %}

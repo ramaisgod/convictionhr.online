@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Conviction HR</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'assets/img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'assets/vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'assets/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+
+  <!-- Argon CSS -->
+  <link type="text/css" href="{% static 'assets/css/argon-design-system.min.css' %}" rel="stylesheet">
+
+    <script src="{% static 'assets/css/bootstrap/jquery.min.js' %}"></script>
+  <!-- Include semantic-ui plugin for dropdown -->
+  <link rel="stylesheet" href="{% static 'semantic-ui/semantic.min.css' %}" type="text/css"/>
+  <script type="text/javascript" src="{% static 'semantic-ui/semantic.min.js' %}"></script>
+  <!-- datepicker CSS -->
+  <link rel="stylesheet" href="{% static 'flatpickr/flatpickr.min.css' %}" type="text/css"/>
+  <!-- datepicker JS -->
+  <script src="{% static 'flatpickr/flatpickr.js' %}"></script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand" href="">
+      <!-- Brand -->
+          <img src="{% static 'assets/img/brand/blue.png' %}" class="navbar-brand-img" alt="...">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-default">
+            <div class="navbar-collapse-header">
+                <div class="row">
+                    <div class="col-6 collapse-brand">
+                        <a href="javascript:void(0)">
+                            <img src="{% static 'assets/img/brand/blue.png' %}">
+                        </a>
+                    </div>
+                    <div class="col-6 collapse-close">
+                        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-default" aria-controls="navbar-default" aria-expanded="false" aria-label="Toggle navigation">
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+<!--
+            <ul class="navbar-nav ml-lg-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="#">
+                        <i class="ni ni-favourite-28"></i>
+                        <span class="nav-link-inner--text d-lg-none">Discover</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-icon" href="#">
+                        <i class="ni ni-notification-70"></i>
+                        <span class="nav-link-inner--text d-lg-none">Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-icon" href="#" id="navbar-default_dropdown_1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="ni ni-settings-gear-65"></i>
+                        <span class="nav-link-inner--text d-lg-none">Settings</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbar-default_dropdown_1">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+-->
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+          <!-- Main content start -->
+              {% block content %}
+
+              {% endblock %}
+          <!-- Main content end -->
+
+</div>
+
+  <!-- Core -->
+  <script src="{% static 'assets/css/bootstrap/popper.min.js' %}"></script>
+  <script src="{% static 'assets/css/bootstrap/bootstrap.min.js' %}"></script>
+
+  <!-- Optional plugins -->
+
+  <!-- Argon JS -->
+  <script src="{% static 'assets/js/argon-design-system.js' %}"></script>
+  </body>
+</html>

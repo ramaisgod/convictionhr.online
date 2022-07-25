@@ -1,0 +1,26 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">CV Repository</a></li>
+{% endblock %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<p class="lead">
+<h2>Welcome to CV Repository</h2>
+
+<i class="ni ni-check-bold">No need to store CVs in your local system</i> <br>
+<i class="ni ni-check-bold">Access CVs from anywhere</i> <br>
+<i class="ni ni-check-bold">Auto Upload CVs in your own repository</i> <br>
+<i class="ni ni-check-bold">Resume Parsing Technology</i> <br>
+<i class="ni ni-check-bold">Search CVs in repository</i>
+</p>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'layouts/employee/index.html' %}
+
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Applications</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Candidate URL</li>
+{% endblock %}
+
+{% block heading %} Candidate URL {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+
+{% block content %}
+
+{% if request.user.user_type == 3 %}
+<div class="ui form">
+<div class="fields">
+ <div class="nine wide field">
+    <div class="ui action input">
+  <input type="text" id="mytext" value="https://convictionhr.online/applications/create_profile/{{request.user.username}}/" readonly>
+  <button data-toggle="tooltip" title="Copy url" data-placement="top" class="ui teal right labeled icon button" id="btnCopyToClipboard">
+    Copy
+  </button>
+</div>
+ </div></div></div>
+{% endif %}
+
+
+<script>
+function copyToClipboard(text) {
+
+   var textArea = document.createElement( "textarea" );
+   textArea.value = text;
+   document.body.appendChild( textArea );
+
+   textArea.select();
+
+   try {
+      var successful = document.execCommand( 'copy' );
+      var msg = successful ? 'successful' : 'unsuccessful';
+      console.log('Copying text command was ' + msg);
+   } catch (err) {
+      console.log('Oops, unable to copy');
+   }
+
+   document.body.removeChild( textArea );
+}
+
+$( '#btnCopyToClipboard' ).click( function()
+ {
+     var clipboardText = "";
+
+     clipboardText = $( '#mytext' ).val();
+
+     copyToClipboard( clipboardText );
+     $( '#mytext' ).select();
+     alert( "Copied to Clipboard" );
+ });
+</script>
+
+{% endblock %}

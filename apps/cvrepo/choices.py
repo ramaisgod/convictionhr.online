@@ -1,0 +1,24 @@
+CHOICE_GENDER = [
+    ('', '---------'),
+    ('MALE', 'MALE'),
+    ('FEMALE', 'FEMALE'),
+    ('OTHER', 'OTHER')
+]
+
+
+CHOICE_SEARCH_BY = [
+    ('', '---------'),
+    ('CANDIATE_NAME', 'CANDIATE_NAME'),
+    ('SKILLS', 'SKILLS'),
+    ('CV_NUMBER', 'CV_NUMBER'),
+    ('CANDIDATE_CODE', 'CANDIDATE_CODE'),
+    ('GENDER', 'GENDER'),
+    ('PAN_NUMBER', 'PAN_NUMBER'),
+    ('MOBILE_NUMBER', 'MOBILE_NUMBER'),
+    ('EMAIL', 'EMAIL'),
+    ('QUALIFICATION', 'QUALIFICATION'),
+    ('WORK_EXPERIENCE', 'WORK_EXPERIENCE'),
+    ('CURRENT_LOCATION', 'CURRENT_LOCATION'),
+    ('SOURCE', 'SOURCE'),
+    ('CANDIDATE_OWNER', 'CANDIDATE_OWNER'),
+]

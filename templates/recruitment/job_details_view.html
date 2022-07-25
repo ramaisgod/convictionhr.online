@@ -1,0 +1,116 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="">Job Openings</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">View</li>
+{% endblock %}
+
+{% block heading %} Job Details ( {{obj_job.JOB_CODE}} ) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <div class="form-row text-sm">
+              <div class="form-group col-md-4">
+                <label for="">CLIENT</label><br>
+               <strong>{{obj_job.CLIENT_CODE.CUSTOMER_NAME}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">JOB_TITLE</label><br>
+                <strong>{{obj_job.JOB_TITLE}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">NUMBER_OF_POSITIONS</label><br>
+                <strong>{{obj_job.NUMBER_OF_POSITIONS}}</strong>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="">JOB_START_DATE</label><br>
+               <strong>{{obj_job.JOB_START_DATE}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">TARGET_DATE</label><br>
+                <strong>{{obj_job.TARGET_DATE}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">JOB_OPENING_STATUS</label><br>
+                <strong>{{obj_job.JOB_OPENING_STATUS}}</strong>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="">JOB_TYPE</label><br>
+                <strong>{{obj_job.JOB_TYPE}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">SKILL</label><br>
+                <strong>{{obj_job.SKILL}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">SUB_SKILL</label><br>
+                <strong>{{obj_job.SUB_SKILL}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">JOB SHIFT</label><br>
+               <strong>{{obj_job.JOB_SHIFT}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">LINE_OF_BUSINESS</label><br>
+               <strong>{{obj_job.LINE_OF_BUSINESS}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">PRIORITY_TYPE</label><br>
+                <strong>{{obj_job.PRIORITY_TYPE}}</strong>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="">WORK_EXPERIENCE</label><br>
+                <strong>{{obj_job.WORK_EXPERIENCE}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">JOB_LOCATION</label><br>
+               <strong>{{obj_job.JOB_LOCATION}}</strong>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="">REQUIRED_QUALIFICATION</label><br>
+                <strong>{{obj_job.REQUIRED_QUALIFICATION}}</strong>
+              </div>
+
+              <div class="form-group col-md-12">
+                <label for="">REQUIRED_SKILLS</label><br>
+               <strong>{{obj_job.REQUIRED_SKILLS}}</strong>
+              </div>
+
+              <div class="form-group col-md-12">
+                <label for="">JOB_DESCRIPTION</label><br>
+               <strong>{{obj_job.JOB_DESCRIPTION}}</strong>
+              </div>
+        </div>
+        <div class="text-md text-primary font-weight-bold">ASSIGNED RECRUITERS</div>
+        <div class="form-row text-sm">
+        <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <tr>
+                <th>EMPLOYEE CODE</th>
+                <th>EMPLOYEE NAME</th>
+                <th>OPS ROLE</th>
+            </tr>
+            {% for item in obj_job.ASSIGNED_SPOC.all %}
+            <tr>
+            <td>{{ item.EMPLOYEE_CODE }}</td>
+            <td>{{ item.EMPLOYEE_FULL_NAME }}</td>
+            <td>{{ item.OPS_ROLE }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

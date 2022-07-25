@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+
+{% block navbar-inner %}
+      <div class="navbar-inner">
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="sidenav-collapse-main">
+          <!-- Nav items -->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'client_interviews' %}" role="button">
+                <i class="ni ni-single-copy-04 text-primary"></i>
+                <span class="nav-link-text">Interviews</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'client_candidates' %}" role="button">
+                <i class="ni ni-single-02 text-primary"></i>
+                <span class="nav-link-text">Candidates</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+{% endblock %}
+
+{% block user-dropdown %}
+          <ul class="navbar-nav align-items-center ml-auto ml-md-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                      <div class="icon icon-sm icon-shape bg-gradient-default text-white rounded-circle shadow">
+                        <i class="ni ni-single-02"></i>
+                      </div>
+                  <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm font-weight-bold">Welcome <i class="ni ni-single-02"></i> {{request.user.first_name|title}} </span>
+
+                  </div>
+                </div>
+              </a>
+
+
+            </li>
+
+            <li class="nav-item ml-2">
+                <form method="post" action="{% url 'logout_page' %}">{% csrf_token %}
+                  <button type="submit" class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Logout">
+                      <span class="icon icon-sm icon-shape bg-gradient-default text-white rounded-circle shadow">
+                        <i class="ni ni-user-run"></i>
+                      </span> <span class="text-sm text-white"> Logout</span>
+                  </button>
+                 </form>
+            </li>
+          </ul>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Client</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">List of Clients</li>
+{% endblock %}
+
+{% block heading %} List of Clients ({{obj_client.paginator.count}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<form method="get">
+<div class="row">
+    <div class="col-md-3">
+        <div class="input-group mb-3">
+          <input type="search" class="form-control form-control-sm" name="searchText" id="searchText" value="{{request.GET.searchText}}" placeholder="Type Client Code/Name" aria-describedby="button-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-sm btn-outline-primary" name="btn_search" type="submit"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="thead-light">
+        <tr role="row">
+            <th class="text-sm">Customer Code</th>
+            <th class="text-sm">Name</th>
+            <th class="text-sm">Start</th>
+            <th class="text-sm">End</th>
+            <th class="text-sm">Location</th>
+            <th class="text-sm">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for client in obj_client %}
+        <tr>
+            <td class="text-wrap">{{client.CUSTOMER_CODE}}</td>
+            <td class="text-wrap">{{client.CUSTOMER_NAME}}</td>
+            <td class="text-wrap">{{client.CONTRACT_START_DATE}}</td>
+            <td class="text-wrap">{{client.CONTRACT_END_DATE}}</td>
+            <td class="text-wrap">{{client.CORPORATE_CITY}}</td>
+            <td>
+                <div class="dropdown dropright">
+                    <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span><i class="ni ni-curved-next"></i></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenu2">
+                        <a href="/client/{{client.id}}/view/" class="dropdown-item" type="button">View</a>
+                        <a href="/client/{{client.id}}/details/" class="dropdown-item" type="button">Edit</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_client.start_index}} to {{obj_client.end_index}} of
+            {{obj_client.paginator.count}} entries
+        </div>
+
+        {% if obj_client.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_client.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_client.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_client.paginator.page_range %}
+                {% if obj_client.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_client.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_client.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'layouts/candidate/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href=""><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Applications</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Create Profile</li>
+{% endblock %}
+
+{% block output %}
+{% endblock %}
+
+{% block heading %} Create Profile {% endblock %}
+
+{% block options %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+    <div class="card-body text-center">
+<h4>Your profile has been created successfully. Your Reference Number is </h4><h3> {{obj_candidate.CANDIDATE_ID}}</h3>
+        <br>Please share reference number with your recruiter.
+    </div>
+</div>
+
+
+{% endblock %}

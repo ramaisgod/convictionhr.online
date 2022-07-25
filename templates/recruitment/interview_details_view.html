@@ -1,0 +1,83 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'interviews' %}">Interviews</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">View</li>
+{% endblock %}
+
+{% block heading %} Interview Details ({{obj_interview.INTERVIEW_ID}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="form-row text-sm">
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE NAME</label><br>
+     <strong>{{obj_interview.CANDIDATE.FIRST_NAME}} {% if obj_interview.CANDIDATE.LAST_NAME %}{{obj_interview.CANDIDATE.LAST_NAME}}{% else %}{% endif %}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">JOB TITLE</label><br>
+      <strong>{{obj_interview.CANDIDATE.JOB_CODE.JOB_TITLE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">CLIENT</label><br>
+      <strong>{{obj_interview.CANDIDATE.JOB_CODE.CLIENT_CODE}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW TYPE</label><br>
+     <strong>{{obj_interview.INTERVIEW_TYPE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW LOCATION</label><br>
+      <strong>{{obj_interview.INTERVIEW_LOCATION}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEWER NAME</label><br>
+      <strong>{{obj_interview.INTERVIEWER_NAME}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW DATE & TIME</label><br>
+     <strong>{{obj_interview.INTERVIEW_DATE}} {{obj_interview.INTERVIEW_TIME}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW ROUND</label><br>
+      <strong>{{obj_interview.INTERVIEW_ROUND}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW STATUS</label><br>
+      <strong>{{obj_interview.INTERVIEW_STATUS}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE STATUS</label><br>
+      <strong>{{obj_interview.CANDIDATE.CANDIDATE_STATUS}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">RECRUITER</label><br>
+      <strong>{{obj_interview.CANDIDATE.RECRUITER}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW SCHEDULED BY</label><br>
+      <strong>{{obj_interview.CREATED_BY}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW SCHEDULED ON</label><br>
+      <strong>{{obj_interview.TIMESTAMP}}</strong>
+  </div>
+
+  <div class="form-group col-md-12">
+    <label for="">COMMENTS</label><br>
+      <strong>{% if obj_interview.INTERVIEW_COMMENTS %}{{obj_interview.INTERVIEW_COMMENTS}}{% else %}{% endif %}</strong>
+  </div>
+</div>
+
+
+{% endblock %}

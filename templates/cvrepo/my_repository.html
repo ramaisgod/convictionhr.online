@@ -1,0 +1,195 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="{% url 'cvrepo_home' %}">CV Repository</a></li>
+<li class="breadcrumb-item text-sm">My Repository</li>
+{% endblock %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="card shadow">
+    <h5 class="card-header alert alert-default">MY REPOSITORY ({{obj_cv|length}})</h5>
+    <div class="card-body p-0">
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th class="text-sm">CV NUMBER</th>
+            <th class="text-sm">CANDIDATE NAME</th>
+            <th class="text-sm">GENDER</th>
+            <th class="text-sm">LOCATION</th>
+            <th class="text-sm">CANDIDATE OWNER</th>
+            <th class="text-sm">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for cv in obj_cv %}
+        <tr>
+            <td class="text-wrap">{{cv.CV_NUMBER}}</td>
+            <td class="text-wrap">{{cv.FIRST_NAME}} {% if cv.LAST_NAME %} {{cv.LAST_NAME}}{% else %}{% endif %}</td>
+            <td class="text-wrap">{{cv.GENDER}}</td>
+            <td class="text-wrap">{{cv.CURRENT_LOCATION}}</td>
+            <td class="text-wrap">{{cv.CANDIDATE_OWNER}}</td>
+            <td>
+                <div class="dropdown dropleft">
+                    <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span><i class="ni ni-curved-next"></i></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenu2">
+                        <a href="{{ cv.RESUME.url }}" target="_blank" class="dropdown-item" type="button">Download CV</a>
+                        <a href="{% url 'view_cv' cv.id %}" class="dropdown-item" type="button">View</a>
+                        <a href="{% url 'edit_cv' cv.id %}" class="dropdown-item" type="button">Edit</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_cv.start_index}} to {{obj_cv.end_index}} of {{obj_cv.paginator.count}} entries
+        </div>
+
+        {% if obj_cv.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_cv.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_cv.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_cv.paginator.page_range %}
+                {% if obj_cv.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_cv.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_cv.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+<br><br>
+</div>
+    </div>
+</div>
+
+<script>
+
+$(document).ready(function () {
+var ID = 0;
+    $("a").click(function() {
+        var a = $(this);
+        ID = a.attr('id');
+        $("#dropOutDiv"+ID).hide();
+        $("#expectedDOJDiv"+ID).hide();
+        $("#finalDOJDiv"+ID).hide();
+        $("#finalDOJ"+ID).val('');
+    })
+
+    $("select").change(function () {
+        var el = $(this);
+        if (el.val() === "FINAL SELECT") {
+              document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#statusRemarks"+ID).append("<option>OFFER PENDING</option>");
+              $("#statusRemarks"+ID).append("<option>DOCS PENDING</option>");
+              $("#statusRemarksDiv"+ID).show();
+              $("#dropOutDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).show();
+              $("#finalDOJDiv"+ID).show();
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              $("#finalDOJ"+ID).attr('readonly', '');
+              $("#expectedDOJ"+ID).attr('required', '');
+              $("#finalDOJ"+ID).val('');
+        } else if (el.val() === "OFFERED") {
+              document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#statusRemarks"+ID).append("<option>DOCS PENDING</option>");
+              $("#statusRemarks"+ID).append("<option>DOCS COMPLETED</option>");
+              $("#statusRemarksDiv"+ID).show();
+              $("#dropOutDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).show();
+              $("#finalDOJDiv"+ID).show();
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              $("#finalDOJ"+ID).removeAttr('readonly');
+              $("#expectedDOJ"+ID).attr('required', '');
+
+        } else if (el.val() === "JOINED") {
+              document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option>JOINED</option>");
+              $("#dropOutDiv"+ID).hide();
+              $("#statusRemarksDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).show();
+              $("#finalDOJ"+ID).attr('required', '');
+              $("#expectedDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              $("#expectedDOJ"+ID).val('');
+        } else if (el.val() === "DROP OUT") {
+              document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option>DROP OUT</option>");
+              $("#dropOutDiv"+ID).show();
+              $("#statusRemarksDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).hide();
+              $("#expectedDOJ"+ID).removeAttr('required');
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).attr('required', '');
+              $("#expectedDOJ"+ID).val('');
+              $("#finalDOJ"+ID).val('');
+        } else if (el.val() === "") {
+              document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#dropOutDiv"+ID).hide();
+              $("#statusRemarksDiv"+ID).show();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).hide();
+              $("#expectedDOJ"+ID).val('');
+              $("#finalDOJ"+ID).val('');
+        }
+    });
+
+});
+
+</script>
+
+{% endblock %}

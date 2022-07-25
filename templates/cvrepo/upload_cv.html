@@ -1,0 +1,126 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="{% url 'cvrepo_home' %}">CV Repository</a></li>
+<li class="breadcrumb-item text-sm">Upload CV</li>
+{% endblock %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <h5 class="card-header alert alert-default">UPLOAD NEW CV</h5>
+    <div class="card-body">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                {% for field in form %}
+                {% if field.name == 'SKILLS' %}
+                <div class="form-group col-md-12">
+                    <label for="">{{field.label}}</label>
+                    <textarea name="{{field.name}}" id="id_{{field.name}}" rows="2"
+                              placeholder="Type candidate skills here">{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                </div>
+                {% elif field.name == 'REMARKS' %}
+                <div class="form-group col-md-12">
+                    <label for="">{{field.label}}</label>
+                    <textarea name="{{field.name}}" id="id_{{field.name}}" rows="2" placeholder="Type remarks if any">{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                </div>
+                {% elif field.name == 'RESUME' %}
+                    <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group">
+                        {{field}}
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary" onclick="document.getElementById('id_RESUME').value = ''" type="button" id="btn_clear"><i class="fas fa-trash-alt"></i> Clear</button>
+                          </div>
+                        </div>
+                        <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
+                    </div>
+                {% else %}
+                <div class="form-group col-md-4">
+                    <label for="">{{field.label}}</label>
+                    {{field}}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-default btn-sm">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control');
+$('select').removeClass('form-control');
+$('select').addClass('ui fluid search selection dropdown');
+</script>
+
+
+<script>
+$('.ui.dropdown')
+  .dropdown(
+
+  )
+;
+
+$('#multi-select')
+  .dropdown()
+;
+
+$('.ui.selection.dropdown')
+  .dropdown({
+    clearable: true,
+    useLabels: true,
+    match: 'both',
+    fullTextSearch: true,
+    allowAdditions: true,
+  })
+;
+$('.ui.inline.dropdown')
+  .dropdown({
+    clearable: true,
+    placeholder: 'any',
+  })
+;
+
+</script>
+
+<script>
+var numInputFields = ['MOBILE_NUMBER'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'CURRENT_LOCATION'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+
+{% endblock %}

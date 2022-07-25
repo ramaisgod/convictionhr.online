@@ -1,0 +1,143 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'interviews' %}">Interviews</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Update</li>
+{% endblock %}
+
+{% block heading %} Update Interview Status ({{obj_interview.INTERVIEW_ID}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<div class="pl-lg-4">
+<div class="form-row text-sm">
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE NAME</label><br>
+     <strong>{{obj_interview.CANDIDATE.FIRST_NAME}} {% if obj_interview.CANDIDATE.LAST_NAME %}{{obj_interview.CANDIDATE.LAST_NAME}}{% else %}{% endif %}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">JOB TITLE</label><br>
+      <strong>{{obj_interview.CANDIDATE.JOB_CODE.JOB_TITLE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">CLIENT</label><br>
+      <strong>{{obj_interview.CANDIDATE.JOB_CODE.CLIENT_CODE}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW TYPE</label><br>
+     <strong>{{obj_interview.INTERVIEW_TYPE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW LOCATION</label><br>
+      <strong>{{obj_interview.INTERVIEW_LOCATION}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEWER NAME</label><br>
+      <strong>{{obj_interview.INTERVIEWER_NAME}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW DATE</label><br>
+     <strong>{{obj_interview.INTERVIEW_DATE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW ROUND</label><br>
+     <strong>{{obj_interview.INTERVIEW_ROUND}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW STATUS</label><br>
+      <strong>{{obj_interview.INTERVIEW_STATUS}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE STATUS</label><br>
+      <strong>{{obj_interview.CANDIDATE.CANDIDATE_STATUS}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">RECRUITER</label><br>
+      <strong>{{obj_interview.CANDIDATE.RECRUITER}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">INTERVIEW SCHEDULED BY</label><br>
+      <strong>{{obj_interview.CREATED_BY}}</strong>
+  </div>
+</div>
+</div>
+
+<div class="card bg-secondary border-0 mb-0">
+  <div class="card-body">
+    <form method="post">{% csrf_token %}
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label class="form-control-label">INTERVIEW ROUND</label>
+            {{form.INTERVIEW_ROUND}}
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label class="form-control-label">INTERVIEW STATUS</label>
+            {{form.INTERVIEW_STATUS}}
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group">
+            <label class="form-control-label">CANDIDATE STATUS</label>
+            {{form.CANDIDATE_STATUS}}
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label class="form-control-label" for="comments">COMMENTS</label>
+            {{form.INTERVIEW_COMMENTS}}
+          </div>
+        </div>
+      </div>
+    <button type="submit"  class="btn btn-default">Update</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+
+$(document).ready(function () {
+
+    $("#id_INTERVIEW_STATUS").change(function () {
+        var el = $(this);
+        if (el.val() === "PENDING") {
+              document.getElementById('id_CANDIDATE_STATUS').options.length = 0;
+              // $("#id_CANDIDATE_STATUS option:last-child").remove();
+              $("#id_CANDIDATE_STATUS").append("<option>PENDING</option>");
+        } else if (el.val() === "ON-HOLD") {
+            document.getElementById('id_CANDIDATE_STATUS').options.length = 0;
+            $("#id_CANDIDATE_STATUS").append("<option>ON-HOLD</option>");
+        } else if (el.val() === "COMPLETED") {
+            document.getElementById('id_CANDIDATE_STATUS').options.length = 0;
+            $("#id_CANDIDATE_STATUS").append("<option></option>");
+            $("#id_CANDIDATE_STATUS").append("<option>SELECT</option>");
+            $("#id_CANDIDATE_STATUS").append("<option>REJECT</option>");
+        } else if (el.val() === "") {
+            document.getElementById('id_CANDIDATE_STATUS').options.length = 0;
+        }
+    });
+
+});
+
+</script>
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

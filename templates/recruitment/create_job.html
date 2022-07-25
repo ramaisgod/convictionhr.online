@@ -1,0 +1,74 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Create Job</li>
+{% endblock %}
+
+{% block heading %} Create Job {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+              <form method="post" action="{% if id %}/recruitment/job/{{id}}/details/{% else %}/recruitment/job/create_job/{% endif %}">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                    {% if field.name == 'REQUIRED_SKILLS' %}
+                      <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <textarea name="{{field.name}}" id="id_{{field.name}}" rows="3" placeholder="Type required skills here">{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                      </div>
+                    {% elif field.name == 'JOB_DESCRIPTION' %}
+                      <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <textarea name="{{field.name}}" id="id_{{field.name}}" rows="6" placeholder="Type job description here" required>{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                      </div>
+                  {% elif field.name == 'ASSIGNED_SPOC' %}
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                      <div class="form-group col-md-12">
+                        <label for="">ASSIGN RECRUITERS</label>
+                        {{form.ASSIGNED_SPOC}}
+                      </div>
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default">Create</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+
+
+<script>
+var numInputFields = ['NUMBER_OF_POSITIONS'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Client</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">New Registration</li>
+{% endblock %}
+
+{% block heading %} New Client Registration {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+              <form method="post" action="{% if id %}/client/{{id}}/details/{% else %}/client/new/{% endif %}">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                  <div class="form-group col-md-4">
+                    <label for="">{{field.label}}</label>
+                    {{field}}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default">Register</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

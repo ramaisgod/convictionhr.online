@@ -1,0 +1,34 @@
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control');
+$('select').removeClass('form-control');
+$('button').removeClass('form-control');
+$('select').addClass('ui fluid search selection dropdown');
+
+$('.ui.dropdown')
+  .dropdown(
+
+  )
+;
+
+$('#multi-select')
+  .dropdown()
+;
+
+$('.ui.selection.dropdown')
+  .dropdown({
+    clearable: true,
+    useLabels: true,
+    match: 'both',
+    fullTextSearch: true,
+    allowAdditions: true,
+  })
+;
+$('.ui.inline.dropdown')
+  .dropdown({
+    clearable: true,
+    placeholder: 'any',
+  })
+;
+
+</script>

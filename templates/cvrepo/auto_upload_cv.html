@@ -1,0 +1,174 @@
+{% extends 'layouts/employee/index.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="{% url 'cvrepo_home' %}">CV Repository</a></li>
+<li class="breadcrumb-item text-sm">Auto Upload</li>
+{% endblock %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <h5 class="card-header alert alert-default">UPLOAD NEW CV</h5>
+    <div class="card-body">
+        <form name="file_form" method="post" enctype="multipart/form-data" action="{% if not form.instance.pk %}{% url 'auto_upload_cv' %}{% else %}{% url 'edit_auto_upload_cv' form.instance.pk %}{% endif %}">
+            {% csrf_token %}
+            {% if not form.instance.pk %}
+                <div class="form-row">
+                {% for field in form %}
+                {% if field.name == 'RESUME' %}
+                    <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group">
+                        {{field}}
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary" onclick="document.getElementById('id_RESUME').value = ''" type="button" id="btn_clear"><i class="fas fa-trash-alt"></i> Clear</button>
+                          </div>
+                        </div>
+                        <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
+                    </div>
+                {% else %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-default mb-2">Proceed</button>
+            {% else %}
+
+          <div class="alert alert-warning alert-dismissible text-left fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times</span>
+            </button>
+            <strong>Below information has been pulled out from CV. Please check and correct if any wrong information.</strong>
+          </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="">FIRST NAME</label>
+                    <input type="text" name="FIRST_NAME" value="{% if data %}{{full_name.first_name}}{% else %}{{form.FIRST_NAME.value}}{% endif %}" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">LAST NAME</label>
+                    <input type="text" name="LAST_NAME" value="{% if data %}{{full_name.last_name}}{% else %}{{form.LAST_NAME.value}}{% endif %}">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">GENDER</label>
+                    {% if data %}
+                    <select name="GENDER" required>
+                        <option value selected>---------</option>
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                    {% else %}
+                    {{form.GENDER}}
+                    {% endif %}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">MOBILE NUMBER</label>
+                    <input type="text" minlength="10" maxlength="10" name="MOBILE_NUMBER" value="{% if data %}{{data.mobile_number}}{% else %}{{form.MOBILE_NUMBER.value}}{% endif %}" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">EMAIL</label>
+                    <input type="email" name="EMAIL" value="{% if data %}{{data.email}}{% else %}{{form.EMAIL.value}}{% endif %}" required>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">SKILLS</label>
+                    <textarea name="SKILLS" rows="3" placeholder="Type here">{% if data %}{{skills}}{% else %}{{form.SKILLS.value}}{% endif %}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">REMARKS</label>
+                    <textarea name="REMARKS" rows="3" placeholder="Type here">{% if form.REMARKS.value %}{{form.REMARKS.value}}{% else %}{% endif %}</textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <button name="btn_output" type="submit" class="btn btn-default">Save</button>
+                </div>
+            </div>
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+$("#id_FIRST_NAME").attr('required', '');
+$("#id_GENDER").attr('required', '');
+$("#id_MOBILE_NUMBER").attr('required', '');
+$("#id_EMAIL").attr('required', '');
+</script>
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control');
+$('select').removeClass('form-control');
+$('button').removeClass('form-control');
+$('select').addClass('ui fluid search selection dropdown');
+</script>
+
+
+<script>
+$('.ui.dropdown')
+  .dropdown(
+
+  )
+;
+
+$('#multi-select')
+  .dropdown()
+;
+
+$('.ui.selection.dropdown')
+  .dropdown({
+    clearable: true,
+    useLabels: true,
+    match: 'both',
+    fullTextSearch: true,
+    allowAdditions: true,
+  })
+;
+$('.ui.inline.dropdown')
+  .dropdown({
+    clearable: true,
+    placeholder: 'any',
+  })
+;
+
+</script>
+
+<script>
+var numInputFields = ['MOBILE_NUMBER'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'LAST_NAME'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Billing</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Pending</li>
+{% endblock %}
+
+{% block heading %} Pending for Invoice ({{ obj_candidate.paginator.count }}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<form method="get">
+    <div class="row">
+        <div class="col-md-3 mb-2">
+            {{form.SEARCH_BY}}
+        </div>
+        <div class="col-md-5 mb-2">
+            <div class="input-group">
+                {{form.SEARCH_TEXT}}
+                <div class="input-group-append">
+                    <button class="btn btn-sm btn-outline-primary" name="btn_search" type="submit"><i
+                            class="fas fa-search"></i> Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="form-row">
+    <div class="table-responsive">
+        <table class="table table-sm table-hover table-bordered">
+            <thead>
+            <tr>
+                <th class="text-sm">CANDIDATE ID</th>
+                <th class="text-sm">CLIENT</th>
+                <th class="text-sm">RECRUITER</th>
+                <th class="text-sm">CANDIDATE NAME</th>
+                <th class="text-sm">FINAL DOJ</th>
+                <th class="text-sm">STATUS</th>
+                <th class="text-sm">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for candidate in obj_candidate %}
+            <tr>
+                <td class="text-wrap">{{candidate.CANDIDATE_ID}}</td>
+                <td class="text-wrap">{{candidate.JOB_CODE.CLIENT_CODE.CUSTOMER_NAME|truncatechars:10}}</td>
+                <td class="text-wrap">{{candidate.RECRUITER.EMPLOYEE_FULL_NAME}}</td>
+                <td class="text-wrap">{{candidate.FIRST_NAME}} {% if candidate.LAST_NAME %} {{candidate.LAST_NAME}}{% else %}{% endif %}</td>
+                <td class="text-wrap">{{candidate.FINAL_DOJ}}</td>
+                <td class="text-wrap">
+                    {{candidate.CANDIDATE_STATUS}}
+                </td>
+                <td>
+                    <a href="{% url 'create_new_invoice' candidate.id %}" class="btn btn-primary btn-sm" type="button" id="{{candidate.id}}">Create Invoice</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+            {{obj_candidate.start_index}} to {{obj_candidate.end_index}} of {{obj_candidate.paginator.count}} entries
+        </div>
+
+        {% if obj_candidate.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_candidate.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_candidate.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_candidate.paginator.page_range %}
+                {% if obj_candidate.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_candidate.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_candidate.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        <br><br>
+    </div>
+</div>
+
+
+<script>
+
+$(document).ready(function () {
+var ID = 0;
+    $("a").click(function() {
+        var a = $(this);
+        ID = a.attr('id');
+        $("#dropOutDiv"+ID).hide();
+        $("#expectedDOJDiv"+ID).hide();
+        $("#finalDOJDiv"+ID).hide();
+        $("#statusRemarksDiv"+ID).hide();
+        $("#finalDOJ"+ID).val('');
+        $("#status"+ID).val('');
+    })
+
+    $("select").change(function () {
+        var el = $(this);
+        if (el.val() === "FINAL SELECT") {
+              $('#statusRemarks'+ID).empty();
+              // document.getElementById('statusRemarks'+ID).options.length = 0;
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#statusRemarks"+ID).append("<option>OFFER PENDING</option>");
+              $("#statusRemarks"+ID).append("<option>OFFER SUBMITTED</option>");
+              $("#statusRemarks"+ID).append("<option>DOCS PENDING</option>");
+              $("#statusRemarks"+ID).append("<option>DOCS SUBMITTED</option>");
+              $("#statusRemarksDiv"+ID).show();
+              $("#dropOutDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).show();
+              $("#finalDOJDiv"+ID).hide();
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              $("#finalDOJ"+ID).attr('readonly', '');
+              $("#expectedDOJ"+ID).attr('required', '');
+              $("#finalDOJ"+ID).val('');
+        } else if (el.val() === "OFFERED") {
+              $('#statusRemarks'+ID).empty();
+              // document.getElementById('statusRemarks'+ID).remove();
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#statusRemarks"+ID).append("<option>DOCS PENDING</option>");
+              $("#statusRemarks"+ID).append("<option>DOCS SUBMITTED</option>");
+              $("#statusRemarksDiv"+ID).show();
+              $("#dropOutDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).show();
+              $("#finalDOJDiv"+ID).show();
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              // $("#finalDOJ"+ID).removeAttr('readonly');
+              $("#expectedDOJ"+ID).attr('required', '');
+
+        } else if (el.val() === "JOINED") {
+              //document.getElementById('statusRemarks'+ID).options.length = 0;
+              $('#statusRemarks'+ID).empty();
+              $("#statusRemarks"+ID).append("<option>JOINED</option>");
+              $("#statusRemarksDiv"+ID).hide();
+              $("#dropOutDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).show();
+              $("#finalDOJ"+ID).attr('required', '');
+              // $("#finalDOJ"+ID).removeAttr('readonly', '');
+              $("#expectedDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).removeAttr('required');
+              $("#expectedDOJ"+ID).val('');
+        } else if (el.val() === "DROP OUT") {
+              // document.getElementById('statusRemarks'+ID).options.length = 0;
+              $('#statusRemarks'+ID).empty();
+              $("#statusRemarks"+ID).append("<option>DROP OUT</option>");
+              $("#dropOutDiv"+ID).show();
+              $("#statusRemarksDiv"+ID).hide();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).hide();
+              $("#expectedDOJ"+ID).removeAttr('required');
+              $("#finalDOJ"+ID).removeAttr('required');
+              $("#dropOutReason"+ID).attr('required', '');
+              $("#expectedDOJ"+ID).val('');
+              $("#finalDOJ"+ID).val('');
+        } else if (el.val() === "") {
+              // document.getElementById('statusRemarks'+ID).options.length = 0;
+              $('#statusRemarks'+ID).empty();
+              $("#statusRemarks"+ID).append("<option></option>");
+              $("#dropOutDiv"+ID).hide();
+              $("#statusRemarksDiv"+ID).show();
+              $("#expectedDOJDiv"+ID).hide();
+              $("#finalDOJDiv"+ID).hide();
+              $("#expectedDOJ"+ID).val('');
+              $("#finalDOJ"+ID).val('');
+        }
+    });
+
+});
+
+
+</script>
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

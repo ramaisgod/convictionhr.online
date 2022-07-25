@@ -1,0 +1,166 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'candidates' %}">Candidates</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">View</li>
+{% endblock %}
+
+{% block heading %} Candidate Details ({{obj_candidate.CANDIDATE_ID}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="form-row text-sm">
+  <div class="form-group col-md-4">
+    <label for="">FIRST NAME</label><br>
+     <strong>{{obj_candidate.FIRST_NAME}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">LAST NAME</label><br>
+      <strong>{{obj_candidate.LAST_NAME}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">GENDER</label><br>
+      <strong>{{obj_candidate.GENDER}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">DATE OF BIRTH</label><br>
+      <strong>{{obj_candidate.DATE_OF_BIRTH}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">JOB</label><br>
+     <strong>{{obj_candidate.JOB_CODE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">SOURCE</label><br>
+      <strong>{{obj_candidate.SOURCE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">SUB_SOURCE</label><br>
+      <strong>{{obj_candidate.SUB_SOURCE}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">EMAIL</label><br>
+     <strong>{{obj_candidate.EMAIL}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">SECONDARY_EMAIL</label><br>
+      <strong>{{obj_candidate.SECONDARY_EMAIL}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">MOBILE_NUMBER</label><br>
+      <strong>{{obj_candidate.MOBILE_NUMBER}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">ALTERNATE_PHONE</label><br>
+     <strong>{{obj_candidate.ALTERNATE_PHONE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">PAN NUMBER</label><br>
+      <strong>{{obj_candidate.PAN_NUMBER}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">QUALIFICATION</label><br>
+      <strong>{{obj_candidate.QUALIFICATION}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">WORK_EXPERIENCE</label><br>
+     <strong>{{obj_candidate.WORK_EXPERIENCE}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">LOCATION</label><br>
+      <strong>{{obj_candidate.LOCATION}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">RECRUITER</label><br>
+      <strong>{{obj_candidate.RECRUITER}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE_STATUS</label><br>
+     <strong>{{obj_candidate.CANDIDATE_STATUS}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">CANDIDATE_STATUS_REMARKS</label><br>
+     <strong>{{obj_candidate.CANDIDATE_STATUS_REMARKS}}</strong>
+  </div>
+
+  <div class="form-group col-md-4">
+    <label for="">CV_APPROVE_DATE</label><br>
+      <strong>{{obj_candidate.CV_APPROVE_DATE}}</strong>
+  </div>
+
+    {% if obj_candidate.CV_APPROVE_BY %}
+      <div class="form-group col-md-4">
+        <label for="">CV_APPROVE_BY</label><br>
+          <strong>{{obj_candidate.CV_APPROVE_BY}}</strong>
+      </div>
+    {% endif %}
+
+    {% if obj_candidate.CV_REJECT_BY %}
+      <div class="form-group col-md-4">
+        <label for="">CV_REJECT_BY</label><br>
+          <strong>{{obj_candidate.CV_REJECT_BY}}</strong>
+      </div>
+    {% endif %}
+
+  <div class="form-group col-md-4">
+    <label for="">DROP_OUT_REASON</label><br>
+     <strong>{{obj_candidate.DROP_OUT_REASON}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">EXPECTED_DOJ</label><br>
+     <strong>{{obj_candidate.EXPECTED_DOJ}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">FINAL_DOJ</label><br>
+     <strong>{{obj_candidate.FINAL_DOJ}}</strong>
+  </div>
+  <div class="form-group col-md-4">
+    <label for="">RESUME</label><br>
+      <strong><a href="{% url 'resume_download' obj_candidate.id %}">Download</a></strong>
+  </div>
+
+</div>
+
+<h6 class="h4 text-primary d-inline-block mb-0">Interview Details</h6>
+<div class="table-responsive">
+    <table class="table table-flush dataTable table-sm table-hover">
+        <thead class="thead-light">
+        <tr role="row">
+            <th class="text-sm" style="width: 100px;">INTERVIEW ID</th>
+            <th class="text-sm" style="width: 160px;">JOB CODE</th>
+            <th class="text-sm" style="width: 160px;">TYPE</th>
+            <th class="text-sm" style="width: 160px;">ROUND</th>
+            <th class="text-sm" style="width: 160px;">DATE</th>
+            <th class="text-sm" style="width: 160px;">INTERVIEW STATUS</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for interview in obj_interview %}
+        <tr role="row" class="odd">
+            <td class="sorting_1">{{interview.INTERVIEW_ID}}</td>
+            <td class="sorting_1">{{interview.CANDIDATE.JOB_CODE|truncatechars:20}}</td>
+            <td>{{interview.INTERVIEW_TYPE}}</td>
+            <td>{{interview.INTERVIEW_ROUND}}</td>
+            <td>{{interview.INTERVIEW_DATE}}</td>
+            <td>{{interview.INTERVIEW_STATUS}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+
+
+{% endblock %}

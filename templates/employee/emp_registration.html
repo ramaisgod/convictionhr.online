@@ -1,0 +1,70 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Employee</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">New Registration</li>
+{% endblock %}
+
+{% block heading %} Employee Registration {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="card shadow">
+    <div class="card-body">
+              <form method="post" action="{% if id %}/employee/{{id}}/details/{% else %}/employee/new/{% endif %}">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                  <div class="form-group col-md-4 {% if field.errors %} has-error{% endif %}">
+                        <label for="{{ field.id_for_label }}">{{field.label}}</label>
+                        {{field}}
+                          {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                          {% endfor %}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default">Register</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+
+{% include 'includes/script.html' %}
+
+<script>
+var numInputFields = ['PRESENT_PIN', 'PRIMARY_MOBILE_NO', 'SECONDARY_MOBILE_NO'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'FATHER_NAME', 'PRESENT_CITY',
+'EMERGENCY_CONTACT_NAME'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+{% endblock %}

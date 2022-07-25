@@ -1,0 +1,57 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block heading %}
+{% include 'cvrepo/cvrepo_header.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <h5 class="card-header alert alert-default">
+        VIEW CV <a href="{% url 'cv_download' form.instance.pk %}" class="text-muted" role="button"><i class="fas fa-download"></i></a>
+    </h5>
+    <div class="card-body">
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                {% for field in form %}
+                {% if field.name == 'RESUME' %}
+                {% elif field.name == 'REMARKS' or field.name == 'SKILLS' %}
+                <div class="form-group col-md-12">
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <td class="text-wrap">
+                                <label for="">{{field.label}}</label><br>
+                                {{field.value}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% else %}
+                <div class="form-group col-md-4">
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <td>
+                                <label for="">{{field.label}}</label>
+                                {{field}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                {% endif %}
+                {% endfor %}
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+$('form').find(':input,:radio,:checkbox').addClass('form-control-plaintext font-weight-bold');
+$('form').find(':input,:radio,:checkbox').attr('readonly', true);
+
+
+</script>
+
+
+{% endblock %}

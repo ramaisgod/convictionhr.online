@@ -1,0 +1,57 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Billing</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Create Invoice</li>
+{% endblock %}
+
+{% block heading %} Create Invoice {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<form class="ui form" method="post">
+    {% csrf_token %}
+<!--  <h4 class="ui dividing header">Candidate Information</h4>-->
+  <div class="three fields">
+      <div class="field">
+        <label class="font-weight-normal">CANDIDATE ID</label>
+        <input type="text" value="{{obj_candidate.CANDIDATE_ID}}" disabled>
+      </div>
+      <div class="field">
+        <label class="font-weight-normal">NAME</label>
+        <input type="text" value="{{obj_candidate.FIRST_NAME}} {% if obj_candidate.LAST_NAME %} {{obj_candidate.LAST_NAME}}{% endif %}" disabled>
+      </div>
+
+    <div class="field">
+        <label class="font-weight-normal">RECRUITER</label>
+        <input value="{{obj_candidate.RECRUITER}}" disabled>
+    </div>
+
+  </div>
+
+    <div class="form-row">
+        {% for field in form %}
+        {% if field.name == 'CANDIDATE' %}
+        {% else %}
+        <div class="col-md-4">
+        <div class="field mb-2">
+        <label class="font-weight-normal">{{field.label}}</label>
+        {{field}}
+        </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="ui button primary">Create</button>
+</form>
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'layouts/candidate/index.html' %}
+
+{% block heading %} Error 404 {% endblock %}
+
+
+{% block content %}
+
+    <!-- Page content -->
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          <div class="card bg-secondary shadow border-0">
+            <div class="card-header bg-transparent pb-5">
+
+              <div class="text-muted text-center mt-2 mb-3">
+                Oups! Error 404      
+              </div>
+
+              <div class="text-center mb-4 h4">
+                Page not found
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <a onClick="javascript:history.go(-1);" class="btn-block btn btn-secondary btn-sm">Back</a>
+            </div>
+            <div class="col-6 text-right">
+            <a href="/accounts/home/" class="btn-block btn btn-secondary btn-sm">Home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

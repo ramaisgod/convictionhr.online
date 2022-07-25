@@ -1,0 +1,112 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'candidates' %}">Candidates</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Edit</li>
+{% endblock %}
+{% block heading %} Candidate Details ({{obj_candidate.CANDIDATE_ID}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+              <form enctype="multipart/form-data" method="post">
+                  {% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                    {% if field.name == 'RESUME' %}
+                      <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label><br>
+                        {{field}}
+                        <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
+                      </div>
+                    {% elif field.name == 'SKILL_SET' %}
+                      <div class="form-group col-md-12">
+                        <label for="">{{field.label}}</label><br>
+                        {{field}}
+                      </div>
+                    {% elif field.name == 'JOB_CODE' %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        <select class="form-control" name="{{field.name}}" id="id_{{field.name}}">
+                          <option value="">---------</option>
+                          {% for item in obj_job %}
+                            {% if item.id == form.JOB_CODE.value|add:"0" %}
+                                  <option value="{{item.id}}" selected>{{item}}</option>
+                            {% elif item.id == field.value %}
+                                  <option value="{{item.id}}" selected>{{item}}</option>
+                            {% else %}
+                                  <option value="{{item.id}}">{{item}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" class="btn btn-default btn-sm">Update</button>
+                </div>
+                </div>
+              </form>
+    </div>
+</div>
+
+
+{% include 'includes/script.html' %}
+
+
+<script>
+$('#RESUME-clear_id').removeClass('form-control');
+$('#RESUME-clear_id').addClass('custom-form-control');
+$('#id_RESUME').removeAttr("required");
+document.getElementById("RESUME-clear_id").setAttribute('onclick','funcResume()');
+function funcResume(){
+var resumeClear = document.getElementById('RESUME-clear_id');
+if (resumeClear.checked == true){
+document.getElementById("id_RESUME").required = true;
+}else{
+$('#id_RESUME').removeAttr("required");
+}
+}
+
+</script>
+
+<script>
+var numInputFields = ['MOBILE_NUMBER'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'LOCATION'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+
+
+{% endblock %}

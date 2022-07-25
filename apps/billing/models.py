@@ -1,0 +1,47 @@
+from django.db import models
+from apps.recruitment.models import Candidate
+from convictionhr_master.choices import *
+
+
+class BillingTracker(models.Model):
+    CANDIDATE = models.ForeignKey(Candidate, on_delete=models.CASCADE, null=True)
+    PO_NUMBER = models.CharField(max_length=255, null=True, blank=True)
+    JOINING_LOCATION = models.CharField(max_length=255, null=True, blank=True)
+    PROCESS = models.CharField(max_length=255, null=True, blank=True)
+    SUB_PROCESS = models.CharField(max_length=255, null=True, blank=True)
+    DESIGNATION = models.CharField(max_length=255, null=True, blank=True)
+    DEPARTMENT = models.CharField(max_length=255, null=True, blank=True)
+    GRADE = models.CharField(max_length=255, null=True, blank=True)
+    INCENTIVE = models.CharField(max_length=255, null=True, blank=True, choices=CHOICE_YESNO)
+    INCENTIVE_CODE = models.CharField(max_length=255, null=True, blank=True)
+    OFFERED_CTC = models.FloatField(null=True, blank=True)
+    BILLING_CTC = models.FloatField(null=True, blank=True)
+    BILLING_CHARGES_PERCENTAGE = models.FloatField(null=True, blank=True)
+    HIRING_COST = models.FloatField(null=True, blank=True)
+    CGST = models.FloatField(null=True, blank=True)
+    SGST = models.FloatField(null=True, blank=True)
+    IGST = models.FloatField(null=True, blank=True)
+    INVOICE_AMOUNT = models.FloatField(null=True, blank=True)
+    INVOICE_NUMBER = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    INVOICE_DATE = models.DateField(null=True, blank=True)
+    INVOICE_SENT_TO_CUSTOMER = models.CharField(max_length=255, null=True, blank=True)
+    PHYSICAL_OR_SOFT_COPY = models.CharField(max_length=255, null=True, blank=True)
+    INVOICE_STATUS = models.CharField(max_length=255, null=True, blank=True)
+    PAID_ON = models.DateField(null=True, blank=True)
+    LWD = models.CharField(max_length=255, null=True, blank=True)
+    UNIQUE_REF_NO = models.CharField(max_length=255, null=True, blank=True)
+    GST_NUMBER = models.CharField(max_length=255, null=True, blank=True)
+    PAN_NUMBER = models.CharField(max_length=255, null=True, blank=True)
+    EMAIL_ID = models.CharField(max_length=255, null=True, blank=True)
+    MOBILE_NO = models.CharField(max_length=255, null=True, blank=True)
+    BILLING_DETAILS_RECEIVED_ON = models.CharField(max_length=255, null=True, blank=True)
+    REMARKS = models.CharField(max_length=255, null=True, blank=True)
+    RAISED_BY = models.CharField(max_length=255, null=True, blank=True)
+    CREDIT_NOTE_NO = models.CharField(max_length=255, null=True, blank=True)
+    CREDIT_NOTE_DATE = models.DateField(null=True, blank=True)
+    TIMESTAMP = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    MODIFIED_BY = models.CharField(max_length=10, null=True, blank=True, editable=False)
+    LAST_MODIFIED = models.DateTimeField(auto_now=True, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return str(self.CANDIDATE)

@@ -1,0 +1,321 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Employee</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page"><a href="{% url 'employee_list' %}">List of Employees</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Edit</li>
+{% endblock %}
+
+{% block heading %} Employee Details ({{obj_emp.EMPLOYEE_CODE}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+
+<div class="nav-wrapper">
+    <ul class="nav nav-pills flex-column flex-md-row" id="tabs-icons-text" role="tablist">
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral active" id="tabs-icons-text-1-tab" data-toggle="tab" href="#tabs-icons-text-1" role="tab" aria-controls="tabs-icons-text-1" aria-selected="true">MY PROFILE</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-2-tab" data-toggle="tab" href="#tabs-icons-text-2" role="tab" aria-controls="tabs-icons-text-2" aria-selected="false">EMPLOYEE DETAILS</a>
+        </li>
+        {% if obj_emp.EMPLOYEE_TYPE == 'EXPERIENCED' %}
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-3-tab" data-toggle="tab" href="#tabs-icons-text-3" role="tab" aria-controls="tabs-icons-text-3" aria-selected="true">LAST EMPLOYMENT</a>
+        </li>
+        {% endif %}
+
+        {% if obj_emp.EMPLOYEE_CODE %}
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-4-tab" data-toggle="tab" href="#tabs-icons-text-4" role="tab" aria-controls="tabs-icons-text-4" aria-selected="false">BANK DETAILS</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn btn-sm btn-neutral" id="tabs-icons-text-5-tab" data-toggle="tab" href="#tabs-icons-text-5" role="tab" aria-controls="tabs-icons-text-5" aria-selected="false">DOCUMENTS</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<div class="card shadow w-100">
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tabs-icons-text-1" role="tabpanel" aria-labelledby="tabs-icons-text-1-tab">
+              <form method="post" action="/employee/{{obj_emp.id}}/details/">{% csrf_token %}
+                <div class="form-row">
+                  {% for field in form %}
+                  <div class="form-group col-md-4">
+                    <label for="">{{field.label}}</label>
+                    {{field}}
+                      {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                      {% endfor %}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" name="btn_basicDetails" class="btn btn-default">Update</button>
+                </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-2" role="tabpanel" aria-labelledby="tabs-icons-text-2-tab">
+              <form method="post" action="/employee/{{obj_emp.id}}/details/">{% csrf_token %}
+                <div class="form-row">
+                  {% for field in formWork %}
+                    {% if field.name == 'REPORTING_MANAGER_CODE' %}
+                    <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group mb-3">
+                        {{field}}
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" onclick="empCodeValidate()" type="button" id="btn_validate">Validate</button>
+                      </div>
+                      {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                      {% endfor %}
+                        </div>
+                    </div>
+                    {% elif field.name == 'HR_MANAGER_CODE' %}
+                    <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group mb-3">
+                        {{field}}
+                      <div class="input-group-append">
+                        <button class="btn btn-primary" onclick="hrManagerCodeValidate()" type="button" id="btn_hrValidate">Validate</button>
+                      </div>
+                      {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                      {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                          {% for error in field.errors %}
+                                <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                          {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" name="btn_workDetails" class="btn btn-default">Save</button>
+                </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-3" role="tabpanel" aria-labelledby="tabs-icons-text-3-tab">
+              <form method="post" action="/employee/{{obj_emp.id}}/details/">{% csrf_token %}
+                <div class="form-row">
+                  {% for field in formEmp %}
+                  <div class="form-group col-md-4">
+                    <label for="">{{field.label}}</label>
+                    {{field}}
+                      {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                      {% endfor %}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" name="btn_lastEmp" class="btn btn-default">Save</button>
+                </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-4" role="tabpanel" aria-labelledby="tabs-icons-text-4-tab">
+              <form method="post" action="/employee/{{obj_emp.id}}/details/">{% csrf_token %}
+                <div class="form-row">
+                  {% for field in formBank %}
+                  <div class="form-group col-md-4">
+                    <label for="">{{field.label}}</label>
+                    {{field}}
+                      {% for error in field.errors %}
+                            <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                      {% endfor %}
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" name="btn_Bank" class="btn btn-default">Save</button>
+                </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade" id="tabs-icons-text-5" role="tabpanel" aria-labelledby="tabs-icons-text-5-tab">
+              <form method="post" enctype="multipart/form-data" action="/employee/{{obj_emp.id}}/details/">{% csrf_token %}
+                <div class="form-row">
+                  {% for field in formDocs %}
+                    {% if field.name == 'EMPLOYEE_CODE' %}
+                        <input type="hidden" name="{{field.name}}" id="id_{{field.name}}" value="{{obj_emp.id}}">
+                    {% elif field.name == 'DOCUMENTS' %}
+                    <div class="form-group col-md-8">
+                        <label for="">{{field.label}}</label>
+                        <div class="input-group mb-1">
+                        {{field}}
+                          <div class="input-group-append">
+                            <button class="btn btn-secondary" onclick="document.getElementById('id_DOCUMENTS').value = ''" type="button" id="btn_clear"><i class="fas fa-trash-alt"></i> Clear</button>
+                          </div>
+                        </div>
+                    </div>
+                    {% else %}
+                      <div class="form-group col-md-4">
+                        <label for="">{{field.label}}</label>
+                        {{field}}
+                          {% for error in field.errors %}
+                                <small class="help-block font-weight-bold text-danger">{{ error }}</small>
+                          {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+                <div class="form-row">
+                <div class="form-group col-md-2">
+                  <button type="submit" name="btn_Docs" class="btn btn-default">Upload</button>
+                </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12">
+                    <small>Document Upload Tips :</small>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <ul>
+                            <li><small class="text-danger">Document size limit is upto 5 mb for each document.</small></li>
+                            <li><small class="text-danger">Valid extensions are 'doc', 'docx', 'xls', 'xlsx', 'pdf', 'zip', 'jpg', 'jpeg', 'png', 'ppt', 'pptx' </small></li>
+                        </ul>
+                    </div>
+                </div>
+              </form>
+                <!-- Display all docs -->
+                <span class="h5">Available Documents :</span>
+                  <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                <thead class="thead-light">
+                <tr role="row">
+                    <th class="text-sm" style="width: 182px;">UPLOAD TIMESTAMP</th>
+                    <th class="text-sm" style="width: 282px;">DOCUMENT TITLE</th>
+                    <th class="text-sm" style="width: 137px;">ACTION</th>
+                </tr>
+                </thead>
+                    <tbody>
+                  {% for item in obj_emp_docs %}
+                    <tr>
+                        <td>{{item.UPLOAD_TIMESTAMP}}</td>
+                        <td>{{item.DOCUMENT_TITLE}}</td>
+                        <td><a href="{% url 'download_emp_docs' item.id %}" role="button" class="btn btn-default btn-sm">Download</a></td>
+                    </tr>
+                  {% endfor %}
+                    </tbody>
+                     </table>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="activeTab_No" value="{{activeTab_No}}">
+
+<script>
+var activeTabNo =  document.getElementById("activeTab_No").value;
+for(var tab=1; tab<=5; tab++){
+if (tab == activeTabNo){
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).addClass('active');
+jQuery(tab2).addClass('show active');
+}else{
+var tab1 = document.getElementById("tabs-icons-text-" + tab + "-tab");
+var tab2 = document.getElementById("tabs-icons-text-" + tab);
+jQuery(tab1).removeClass('active');
+jQuery(tab2).removeClass('show active');
+}
+}
+</script>
+
+{% include 'includes/script.html' %}
+
+<script>
+$("#id_REPORTING_MANAGER_CODE").on('change keydown paste input', function(){
+    $("#id_REPORTING_MANAGER_NAME").val("");
+});
+
+function empCodeValidate(){
+empCode = document.getElementById('id_REPORTING_MANAGER_CODE').value;
+$.ajax({
+url: 'ajax/emp_name/',
+data: {'empCode': String(empCode)},
+dataType: 'json',
+success: function(data){
+if (data.emp_name != ''){
+$("#id_REPORTING_MANAGER_NAME").val(data.emp_name);
+}else{
+alert("Please enter valid employee code");
+}
+}
+}
+)
+}
+
+</script>
+
+<script>
+$("#id_HR_MANAGER_CODE").on('change keydown paste input', function(){
+    $("#id_HR_MANAGER_NAME").val("");
+});
+
+function hrManagerCodeValidate(){
+empCode = document.getElementById('id_HR_MANAGER_CODE').value;
+$.ajax({
+url: 'ajax/emp_name/',
+data: {'empCode': String(empCode)},
+dataType: 'json',
+success: function(data){
+if (data.emp_name != ''){
+$("#id_HR_MANAGER_NAME").val(data.emp_name);
+}else{
+alert("Please enter valid employee code");
+}
+}
+}
+)
+}
+
+</script>
+
+<script>
+var numInputFields = ['REPORTING_MANAGER_CODE', 'PRESENT_PIN', 'PRIMARY_MOBILE_NO', 'SECONDARY_MOBILE_NO',
+'SWIPE_ATTENDANCE_NUMBER', 'LAST_EMPLOYER_CTC', 'AADHAAR_CARD_NO', 'BANK_ACCOUNT_NO'];
+    Array.from(numInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^0-9]/g, ''));
+        });
+    });
+
+    })
+
+var charInputFields = ['FIRST_NAME', 'MIDDLE_NAME', 'LAST_NAME', 'FATHER_NAME', 'PRESENT_CITY',
+'EMERGENCY_CONTACT_NAME', 'REFERENCE_NAME', 'REFERENCE_DESIGNATION', 'BANK_NAME'];
+    Array.from(charInputFields).forEach(function(element) {
+
+    $(function() {
+        $("input[name=" + element + "]").on('input', function(e) {
+            $(this).val($(this).val().replace(/[^a-zA-Z ]/g, ''));
+        });
+    });
+
+    })
+
+</script>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'layouts/employee/index.html' %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item text-sm"><a href="{% url 'home' %}"><i class="fas fa-home"></i></a></li>
+<li class="breadcrumb-item text-sm"><a href="">Recruitment</a></li>
+<li class="breadcrumb-item text-sm active" aria-current="page">Interviews</li>
+{% endblock %}
+
+{% block heading %} Interviews ({{obj_interview.paginator.count}}) {% endblock %}
+
+{% block options %}
+<a onClick="javascript:history.go(-1);" class="btn btn-sm btn-neutral">Back</a>
+{% endblock %}
+
+{% block content %}
+
+<form method="get">
+<div class="row">
+    <div class="col-md-3 mb-2">
+            {{form.SEARCH_BY}}
+    </div>
+    <div class="col-md-5 mb-2">
+        <div class="input-group">
+          {{form.SEARCH_TEXT}}
+          <div class="input-group-append">
+            <button class="btn btn-outline-primary" name="btn_search" type="submit"><i class="fas fa-search"></i> Search</button>
+          </div>
+        </div>
+    </div>
+</div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm table-hover table-bordered">
+        <thead>
+        <tr>
+            <th class="text-sm">INTERVIEW ID</th>
+            <th class="text-sm">CLIENT</th>
+            <th class="text-sm">RECRUITER</th>
+            <th class="text-sm">CANDIDATE NAME</th>
+            <th class="text-sm">ROUND</th>
+            <th class="text-sm">DATE</th>
+            <th class="text-sm">STATUS</th>
+            <th class="text-sm">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for interview in obj_interview %}
+        <tr>
+            <td class="text-wrap">{{interview.INTERVIEW_ID}}</td>
+            <td class="text-wrap">{{interview.CANDIDATE.JOB_CODE.CLIENT_CODE|truncatechars:15}}</td>
+            <td class="text-wrap">{{interview.CANDIDATE.RECRUITER.EMPLOYEE_FULL_NAME}}</td>
+            <td class="text-wrap">{{interview.CANDIDATE.FIRST_NAME}} {% if interview.CANDIDATE.LAST_NAME %}{{interview.CANDIDATE.LAST_NAME}}{% else %}{% endif %}</td>
+            <td class="text-wrap">{{interview.INTERVIEW_ROUND}}</td>
+            <td class="text-wrap">{{interview.INTERVIEW_DATE}}</td>
+            <td class="text-wrap">{{interview.INTERVIEW_STATUS}}</td>
+            <td>
+                <div class="dropdown dropright">
+                    <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <span><i class="ni ni-curved-next"></i></span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenu2">
+                        <a href="{% url 'interview_details_view' interview.id %}" class="dropdown-item" type="button">View</a>
+                        <a href="{% url 'update_interview_status' interview.id %}" class="dropdown-item" type="button">Update</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="dataTables_info" id="datatable-basic_info" role="status" aria-live="polite">Showing
+        {{obj_interview.start_index}} to {{obj_interview.end_index}} of
+        {{obj_interview.paginator.count}} entries
+    </div>
+
+        {% if obj_interview.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                {% if obj_interview.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_interview.previous_page_number }}" tabindex="-1">
+                        <i class="fa fa-angle-left"></i><span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="" tabindex="-1">
+                        <i class="fa fa-angle-left"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for i in obj_interview.paginator.page_range %}
+                {% if obj_interview.number == i %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if obj_interview.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ obj_interview.next_page_number }}">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="">
+                        <i class="fa fa-angle-right"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+
+{% include 'includes/script.html' %}
+
+{% endblock %}
