@@ -29,6 +29,7 @@
                       <div class="form-group col-md-12">
                         <label for="">{{field.label}}</label><br>
                         {{field}}
+                        <small><i>Note: Use comma separator for multiple skills.</i></small>
                       </div>
                     {% elif field.name == 'JOB_CODE' %}
                       <div class="form-group col-md-4">
@@ -95,7 +96,7 @@ var numInputFields = ['MOBILE_NUMBER'];
 
     })
 
-var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'LOCATION'];
+var charInputFields = ['FIRST_NAME', 'LAST_NAME'];
     Array.from(charInputFields).forEach(function(element) {
 
     $(function() {

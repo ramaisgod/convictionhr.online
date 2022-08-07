@@ -55,12 +55,47 @@
     <div class="card-body">
               <form enctype="multipart/form-data" method="post">
                   {% csrf_token %}
+                    <!-- radio option for interested and Not interested -->
+                    <div id="intStatusForm" class="ui form">
+                      <div class="inline fields">
+                        <div class="field">
+                          <div class="ui radio checkbox">
+                              {% if 'intStatus' not in request.POST %}
+                              <input type="radio" name="intStatus" value="Interested" checked="" tabindex="0" class="hidden">
+                              {% else %}
+                              {% endif %}
+
+                              {% if request.POST.intStatus == 'Interested' %}
+                              <input type="radio" name="intStatus" value="Interested" checked="" tabindex="0" class="hidden">
+                              {% else %}
+                              <input type="radio" name="intStatus" value="Interested" tabindex="0" class="hidden">
+                              {% endif %}
+                            <label>Interested Candidate</label>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <div class="ui radio checkbox">
+                              {% if request.POST.intStatus == 'Not Interested' %}
+                                <input type="radio" name="intStatus" value="Not Interested" checked="" tabindex="0" class="hidden">
+                              {% else %}
+                                <input type="radio" name="intStatus" value="Not Interested" tabindex="0" class="hidden">
+                              {% endif %}
+                            <label>Not Interested Candidate</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <br>
+                    <!-- -->
+
                 <div class="form-row">
                   {% for field in form %}
                     {% if field.name == 'SKILL_SET' %}
                       <div class="form-group col-md-12">
                         <label for="">{{field.label}}</label>
-                        <textarea name="{{field.name}}" id="id_{{field.name}}" rows="2" placeholder="Type candidate skills here. Example- Java, C++, SQL, etc.">{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                        <textarea name="{{field.name}}" id="id_{{field.name}}" rows="2" placeholder="Type candidate skills here. Example- Java, C++, SQL, etc." required>{% if field.value %}{{field.value}}{% else %}{% endif %}</textarea>
+                          <small><i>Note: Use comma separator for multiple skills.</i></small>
                       </div>
                     {% elif field.name == 'RESUME' %}
                     <div class="form-group col-md-12">
@@ -74,7 +109,7 @@
                       <small class="help-text">File type should be MS-Word or PDF. File size upto 5MB</small>
                     </div>
                     {% elif field.name == 'JOB_CODE' %}
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-4" id="job_code_div">
                         <label for="">{{field.label}}</label>
                         <select class="form-control" name="{{field.name}}" id="id_{{field.name}}">
                           <option value="">---------</option>
@@ -120,7 +155,7 @@ var numInputFields = ['MOBILE_NUMBER'];
 
     })
 
-var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'LOCATION'];
+var charInputFields = ['FIRST_NAME', 'LAST_NAME'];
     Array.from(charInputFields).forEach(function(element) {
 
     $(function() {
@@ -131,6 +166,32 @@ var charInputFields = ['FIRST_NAME', 'LAST_NAME', 'LOCATION'];
 
     })
 </script>
+
+<script>
+$('.ui.radio.checkbox')
+  .checkbox()
+;
+
+
+$('input[name="intStatus"]').on('click change', function(){
+var intStatusValue = $('input[name=intStatus]:checked', '#intStatusForm').val()
+if (intStatusValue == "Not Interested"){
+document.getElementById("job_code_div").style.display = 'none';
+}else{
+document.getElementById("job_code_div").style.display = 'block';
+}
+});
+
+var intStatusValue = $('input[name=intStatus]:checked', '#intStatusForm').val()
+if (intStatusValue == "Not Interested"){
+document.getElementById("job_code_div").style.display = 'none';
+}else{
+document.getElementById("job_code_div").style.display = 'block';
+}
+
+</script>
+
+
 
 {% include 'includes/script.html' %}
 

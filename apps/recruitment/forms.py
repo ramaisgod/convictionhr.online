@@ -47,17 +47,19 @@ class NewCandidateForm(forms.ModelForm):
                                       widget=forms.TextInput(attrs={'pattern':'[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}'}))
     WORK_EXPERIENCE = forms.ChoiceField(required=True, choices=CHOICE_EXP, label='WORK EXPERIENCE (YEAR)')
     SOURCE = forms.ModelChoiceField(required=True, label='SOURCE', queryset=Source.objects.values_list('name', flat=True), to_field_name='name')
+    SKILL_SET = forms.CharField(required=True, label='SKILL SET', widget=forms.Textarea(attrs={"placeholder": "Type candidate skills here. Example- Java, C++, SQL, etc.", "rows": 3}))
+    LOCATION = forms.CharField(required=True, label='CANDIDATE  PREFERRED  LOCATION', widget=forms.TextInput(attrs={"placeholder": "Example- Mumbai, Delhi, Pune"}))
 
     class Meta:
         model = Candidate
         fields = ['JOB_CODE', 'FIRST_NAME', 'LAST_NAME', 'DATE_OF_BIRTH', 'GENDER', 'PAN_NUMBER', 'SOURCE', 'SUB_SOURCE',
                   'EMAIL', 'SECONDARY_EMAIL', 'MOBILE_NUMBER', 'ALTERNATE_PHONE', 'QUALIFICATION', 'WORK_EXPERIENCE',
-                  'LOCATION', 'RESUME']
+                  'LOCATION', 'RESUME', 'SKILL_SET']
 
     def __init__(self, *args, **kwargs):
         super(NewCandidateForm, self).__init__(*args, **kwargs)
         fields_required = ['JOB_CODE', 'FIRST_NAME', 'DATE_OF_BIRTH', 'GENDER', 'SOURCE', 'SUB_SOURCE', 'EMAIL',
-                           'MOBILE_NUMBER', 'LOCATION', 'QUALIFICATION', 'WORK_EXPERIENCE', 'RESUME']
+                           'MOBILE_NUMBER', 'LOCATION', 'QUALIFICATION', 'WORK_EXPERIENCE', 'RESUME', 'SKILL_SET']
         for visible in self.visible_fields():
             if visible.name in fields_required:
                 visible.field.widget.attrs['required'] = True
@@ -106,7 +108,7 @@ class InterviewStatusForm(forms.ModelForm):
 
 
 class SearchCandidateForm(forms.ModelForm):
-    SEARCH_BY = forms.ChoiceField(required=True, choices=CHOICE_SEARCH_BY_CANDIDATE, label='SEARCH BY')
+    SEARCH_BY = forms.ChoiceField(required=False, choices=CHOICE_SEARCH_BY_CANDIDATE, label='SEARCH BY')
     SEARCH_TEXT = forms.CharField(required=True, label='SEARCH TEXT', widget=forms.TextInput(attrs={'type': 'search', 'placeholder': 'Type for search'}))
 
     class Meta:

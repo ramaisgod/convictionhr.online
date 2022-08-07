@@ -227,7 +227,16 @@ def new_candidate(request):
         'obj_job': obj_job,
     }
     if request.method == 'POST':
+        print(request.POST)
         form = NewCandidateForm(request.POST, request.FILES)
+        intStatus = request.POST.get('intStatus')
+        job_code = request.POST.get('JOB_CODE')
+        print(intStatus)
+        print(job_code)
+        if (intStatus == 'Interested') and (not job_code):
+            messages.warning(request, "Please select a Job Code")
+            context['form'] = NewCandidateForm(request.POST, request.FILES)
+            return render(request, 'recruitment/new_candidate.html', context)
         if form.is_valid():
             obj = form.save(commit=False)
             EMAIL = form.cleaned_data['EMAIL']
@@ -237,10 +246,11 @@ def new_candidate(request):
             JOB_CODE = form.cleaned_data['JOB_CODE']
             PAN_NUMBER = form.cleaned_data['PAN_NUMBER'].upper()
             # Check if Job TARGET DATE is expired
-            if JOB_CODE.TARGET_DATE < date.today():
-                messages.warning(request, f"Job Code {JOB_CODE.JOB_CODE} is expired. please contact HR Manager !!!")
-                context['form'] = NewCandidateForm(request.POST, request.FILES)
-                return render(request, 'recruitment/new_candidate.html', context)
+            if intStatus == 'Interested':
+                if JOB_CODE.TARGET_DATE < date.today():
+                    messages.warning(request, f"Job Code {JOB_CODE.JOB_CODE} is expired. please contact HR Manager !!!")
+                    context['form'] = NewCandidateForm(request.POST, request.FILES)
+                    return render(request, 'recruitment/new_candidate.html', context)
 
             # Check if candidate is above 18 years
             DATE_OF_BIRTH = form.cleaned_data['DATE_OF_BIRTH']
@@ -277,7 +287,10 @@ def new_candidate(request):
                 year = date.today().strftime('%y')
                 month = date.today().strftime('%m')
                 obj_candidate.CANDIDATE_ID = 'CN' + str(id).zfill(4)
-                obj_candidate.CANDIDATE_STATUS = "APPROVAL PENDING"
+                if intStatus == 'Interested':
+                    obj_candidate.CANDIDATE_STATUS = "APPROVAL PENDING"
+                if intStatus == 'Not Interested':
+                    obj_candidate.CANDIDATE_STATUS = "NOT INTERESTED"
                 obj_candidate.CREATED_BY = request.user.username
                 obj_emp = Employee.objects.get(EMPLOYEE_CODE=request.user.username)
                 obj_candidate.RECRUITER = obj_emp
@@ -391,17 +404,20 @@ def candidates(request):
             obj_candidate = Candidate.objects.filter(EMAIL=searchText).exclude(CANDIDATE_STATUS="APPLICATION SUBMITTED").distinct().order_by('-TIMESTAMP')
         if searchBy == 'SOURCE':
             obj_candidate = Candidate.objects.filter(SOURCE=searchText).exclude(CANDIDATE_STATUS="APPLICATION SUBMITTED").distinct().order_by('-TIMESTAMP')
+        if searchBy == 'SKILLS':
+            obj_candidate = Candidate.objects.filter(SKILL_SET__icontains=searchText).exclude(CANDIDATE_STATUS="APPLICATION SUBMITTED").distinct().order_by('-TIMESTAMP')
         if not searchBy:
             obj_candidate = Candidate.objects.filter(Q(CANDIDATE_ID=searchText) |
-                                              Q(FIRST_NAME__icontains=searchText) |
-                                              Q(LAST_NAME__icontains=searchText) |
-                                              Q(RECRUITER__EMPLOYEE_CODE=searchText) |
-                                              Q(RECRUITER__EMPLOYEE_FULL_NAME__icontains=searchText) |
-                                              Q(JOB_CODE__JOB_CODE=searchText) |
-                                              Q(JOB_CODE__JOB_TITLE__icontains=searchText) |
-                                              Q(EMAIL=searchText) |
-                                              Q(MOBILE_NUMBER=searchText) |
-                                              Q(PAN_NUMBER=searchText)).exclude(CANDIDATE_STATUS="APPLICATION SUBMITTED").distinct().order_by('-TIMESTAMP')
+                                                     Q(FIRST_NAME__icontains=searchText) |
+                                                     Q(LAST_NAME__icontains=searchText) |
+                                                     Q(RECRUITER__EMPLOYEE_CODE=searchText) |
+                                                     Q(RECRUITER__EMPLOYEE_FULL_NAME__icontains=searchText) |
+                                                     Q(JOB_CODE__JOB_CODE=searchText) |
+                                                     Q(JOB_CODE__JOB_TITLE__icontains=searchText) |
+                                                     Q(EMAIL=searchText) |
+                                                     Q(MOBILE_NUMBER=searchText) |
+                                                     Q(SKILL_SET__icontains=searchText) |
+                                                     Q(PAN_NUMBER=searchText)).exclude(CANDIDATE_STATUS="APPLICATION SUBMITTED").distinct().order_by('-TIMESTAMP')
 
     obj_interview = Interview.objects.all()
     page = request.GET.get('page', 1)
@@ -506,6 +522,19 @@ def reject_candidate(request, id=None):
         obj_candidate.CV_REJECT_BY = request.user.username
         obj_candidate.save()
         messages.success(request, "Candidate has been rejected !!!")
+        return HttpResponseRedirect('/recruitment/work_list/')
+
+
+@login_required
+def not_interested_candidate(request, id=None):
+    obj_candidate = Candidate.objects.get(id=id)
+    if request.method == 'POST':
+        obj_candidate.CANDIDATE_STATUS = "NOT INTERESTED"
+        obj_candidate.JOB_CODE = None
+        obj_candidate.MODIFIED_BY = request.user.username
+        obj_candidate.LAST_MODIFIED = now()
+        obj_candidate.save()
+        messages.success(request, "Candidate has been marked as not interested !!!")
         return HttpResponseRedirect('/recruitment/work_list/')
 
 

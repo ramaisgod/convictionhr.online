@@ -88,7 +88,7 @@ DATABASES = {
     'default': {
         'NAME': 'conviction_dev',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': 'RK-PC',
+        'HOST': 'RAM-PC',
         'PORT': '1433',
         'USER': '',
         'PASSWORD': '',

@@ -58,13 +58,24 @@
             <td class="text-wrap">{{candidate.CANDIDATE_STATUS}}</td>
             <td class="text-wrap">
                 <div class="btn-group btn-group-toggle">
-                {% if candidate.CANDIDATE_STATUS == 'APPROVAL PENDING' %}
-                <a href="/recruitment/{{candidate.id}}/approve/" class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#approveModal_{{candidate.id}}">APPROVE</a>
+                    <div class="dropdown dropleft">
+                        <button class="btn btn-secondary btn-sm" type="button" id="dropdownMenu2" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            <span><i class="ni ni-curved-next"></i></span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenu2">
+                            {% if candidate.CANDIDATE_STATUS == 'APPROVAL PENDING' %}
+                            <a href="/recruitment/{{candidate.id}}/approve/" class="dropdown-item" type="button" data-toggle="modal" data-target="#approveModal_{{candidate.id}}">APPROVE</a>
 
-                <a href="/recruitment/{{candidate.id}}/reject/" class="btn btn-danger btn-sm" type="button" data-toggle="modal" data-target="#rejectModal_{{candidate.id}}">REJECT</a>
-                {% else %}
-                Not Required
-                {% endif %}
+                            <a href="/recruitment/{{candidate.id}}/reject/" class="dropdown-item" type="button" data-toggle="modal" data-target="#rejectModal_{{candidate.id}}">REJECT</a>
+
+                            <a href="/recruitment/{{candidate.id}}/not_interested/" class="dropdown-item" type="button" data-toggle="modal" data-target="#not_interestedModal_{{candidate.id}}">NOT INTERESTED</a>
+
+                            {% else %}
+                            Not Required
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <!-- Modal for Approve -->
                 <div class="modal fade" data-backdrop="static" data-keyboard="false" id="approveModal_{{candidate.id}}" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
@@ -129,6 +140,38 @@
                   </div>
                 </div>
                 <!--End Modal for Reject -->
+
+                <!-- Modal for Not Interested -->
+                <div class="modal fade" data-backdrop="static" data-keyboard="false" id="not_interestedModal_{{candidate.id}}" tabindex="-1" role="dialog" aria-labelledby="not_interestedModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-default" id="not_interestedModalLabel">Confirm</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                       <div class="text-default mb-3 ml-auto">
+                           Job Title : <b>{{candidate.JOB_CODE.JOB_TITLE}}</b><br>
+                           Client : <b>{{candidate.JOB_CODE.CLIENT_CODE.CUSTOMER_NAME}}</b><br>
+                           Candidate Name : <b>{{candidate.FIRST_NAME}} {% if candidate.LAST_NAME %} {{candidate.LAST_NAME}}{% else %}{% endif %}</b><br>
+                           </div>
+                          <div class="text-default ml-auto">
+                          Do you want to mark as NOT INTERESTED ?
+                              </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <form method="post" action="{% url 'not_interested_candidate' candidate.id %}">
+                              {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">MARK AS NOT INTERESTED</button>
+                              </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--End Modal for Not Interested -->
             </td>
         </tr>
 

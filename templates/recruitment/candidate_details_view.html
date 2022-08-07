@@ -76,7 +76,7 @@
      <strong>{{obj_candidate.WORK_EXPERIENCE}}</strong>
   </div>
   <div class="form-group col-md-4">
-    <label for="">LOCATION</label><br>
+    <label for="">CANDIDATE  PREFERRED  LOCATION</label><br>
       <strong>{{obj_candidate.LOCATION}}</strong>
   </div>
   <div class="form-group col-md-4">
@@ -128,6 +128,11 @@
   <div class="form-group col-md-4">
     <label for="">RESUME</label><br>
       <strong><a href="{% url 'resume_download' obj_candidate.id %}">Download</a></strong>
+  </div>
+
+  <div class="form-group col-md-12">
+    <label for="">SKILL SET</label><br>
+      <strong>{{obj_candidate.SKILL_SET}}</strong>
   </div>
 
 </div>

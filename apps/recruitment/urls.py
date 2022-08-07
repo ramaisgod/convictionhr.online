@@ -13,6 +13,7 @@ urlpatterns = [
     path('work_list/', work_list, name='work_list'),
     path('work_list/<int:id>/approve/', approve_candidate, name='approve_candidate'),
     path('work_list/<int:id>/reject/', reject_candidate, name='reject_candidate'),
+    path('work_list/<int:id>/not_interested/', not_interested_candidate, name='not_interested_candidate'),
     path('resume_download/<int:id>/', resume_download, name='resume_download'),
     path('job/create_job/', create_job, name='create_job'),
     path('candidates/', candidates, name='candidates'),

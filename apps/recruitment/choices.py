@@ -84,7 +84,8 @@ CHOICE_SEARCH_BY_CANDIDATE = [
     ('PAN_NUMBER', 'PAN_NUMBER'),
     ('MOBILE_NUMBER', 'MOBILE_NUMBER'),
     ('EMAIL', 'EMAIL'),
-    ('SOURCE', 'SOURCE')
+    ('SOURCE', 'SOURCE'),
+    ('SKILLS', 'SKILLS')
 ]
 
 
