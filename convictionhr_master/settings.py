@@ -11,6 +11,16 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_value(env_variable):
+    try:
+        return os.environ[env_variable]
+    except KeyError:
+        error_msg = f'Please set {env_variable} environment variable'
+        raise ImproperlyConfigured(error_msg)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,13 +29,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'xzrb&2pxni257n*6rn9j15t6*vo4fe54h-$b212ui6n$n#w!ep'
+
+SECRET_KEY = os.environ.get('SECRETKEY', 'unsafe-secret-key')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get(get_env_value('DEBUG'), False)
 
-ALLOWED_HOSTS = ['*', '107.180.103.53', 'convictionhr.online']
-
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 
 # Application definition
 
@@ -86,10 +97,10 @@ WSGI_APPLICATION = 'convictionhr_master.wsgi.application'
 
 DATABASES = {
     'default': {
-        'NAME': 'conviction_dev',
+        'NAME': get_env_value('DATABASE_NAME'),
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': 'RAM-PC',
-        'PORT': '1433',
+        'HOST': get_env_value('DATABASE_HOST'),
+        'PORT': get_env_value('DATABASE_PORT'),
         'USER': '',
         'PASSWORD': '',
         'OPTIONS': {
@@ -98,23 +109,6 @@ DATABASES = {
         },
     },
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'NAME': 'conviction_prod',
-#         'ENGINE': 'sql_server.pyodbc',
-#         'HOST': 'S107-180-103-53',
-#         'PORT': '1433',
-#         'USER': 'sa',
-#         'PASSWORD': '3nj0ym@st!',
-#         'OPTIONS': {
-#             'driver': 'ODBC Driver 17 for SQL Server',
-#             'Trusted_Connection': 'Yes'
-#         },
-#     },
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
